@@ -16,7 +16,7 @@ export default () => (
             <h1>Generic</h1>
           </header>
           <span className="image main">
-            <img src="/public/images/pic11.jpg" alt="" />
+            <img src="/images/pic11.jpg" alt="" />
           </span>
           <p>
             Donec eget ex magna. Interdum et malesuada fames ac ante ipsum

@@ -10,9 +10,7 @@ export default () => (
 
       <div id="main">
         <section id="one" className="tiles">
-          <article
-            style={{ backgroundImage: `url('/public/images/pic01.jpg')` }}
-          >
+          <article style={{ backgroundImage: `url('/images/pic01.jpg')` }}>
             <header className="major">
               <h3>Aliquam</h3>
               <p>Ipsum dolor sit amet</p>
@@ -21,9 +19,7 @@ export default () => (
               <a className="link primary"></a>
             </Link>
           </article>
-          <article
-            style={{ backgroundImage: `url('/public/images/pic02.jpg')` }}
-          >
+          <article style={{ backgroundImage: `url('/images/pic02.jpg')` }}>
             <header className="major">
               <h3>Tempus</h3>
               <p>feugiat amet tempus</p>
@@ -32,9 +28,7 @@ export default () => (
               <a className="link primary"></a>
             </Link>
           </article>
-          <article
-            style={{ backgroundImage: `url('/public/images/pic03.jpg')` }}
-          >
+          <article style={{ backgroundImage: `url('/images/pic03.jpg')` }}>
             <header className="major">
               <h3>Magna</h3>
               <p>Lorem etiam nullam</p>
@@ -43,9 +37,7 @@ export default () => (
               <a className="link primary"></a>
             </Link>
           </article>
-          <article
-            style={{ backgroundImage: `url('/public/images/pic04.jpg')` }}
-          >
+          <article style={{ backgroundImage: `url('/images/pic04.jpg')` }}>
             <header className="major">
               <h3>Ipsum</h3>
               <p>Nisl sed aliquam</p>
@@ -54,9 +46,7 @@ export default () => (
               <a className="link primary"></a>
             </Link>
           </article>
-          <article
-            style={{ backgroundImage: `url('/public/images/pic05.jpg')` }}
-          >
+          <article style={{ backgroundImage: `url('/images/pic05.jpg')` }}>
             <header className="major">
               <h3>Consequat</h3>
               <p>Ipsum dolor sit amet</p>
@@ -65,9 +55,7 @@ export default () => (
               <a className="link primary"></a>
             </Link>
           </article>
-          <article
-            style={{ backgroundImage: `url('/public/images/pic06.jpg')` }}
-          >
+          <article style={{ backgroundImage: `url('/images/pic06.jpg')` }}>
             <header className="major">
               <h3>Etiam</h3>
               <p>Feugiat amet tempus</p>

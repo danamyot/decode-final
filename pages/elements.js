@@ -639,53 +639,53 @@ export default () => (
 
               <h4>Fit</h4>
               <span className="image fit">
-                <img src="/public/images/pic03.jpg" alt="" />
+                <img src="/images/pic03.jpg" alt="" />
               </span>
               <div className="box alt">
                 <div className="row 50% uniform">
                   <div className="4u">
                     <span className="image fit">
-                      <img src="/public/images/pic08.jpg" alt="" />
+                      <img src="/images/pic08.jpg" alt="" />
                     </span>
                   </div>
                   <div className="4u">
                     <span className="image fit">
-                      <img src="/public/images/pic09.jpg" alt="" />
+                      <img src="/images/pic09.jpg" alt="" />
                     </span>
                   </div>
                   <div className="4u">
                     <span className="image fit">
-                      <img src="/public/images/pic10.jpg" alt="" />
+                      <img src="/images/pic10.jpg" alt="" />
                     </span>
                   </div>
                   <div className="4u">
                     <span className="image fit">
-                      <img src="/public/images/pic10.jpg" alt="" />
+                      <img src="/images/pic10.jpg" alt="" />
                     </span>
                   </div>
                   <div className="4u">
                     <span className="image fit">
-                      <img src="/public/images/pic08.jpg" alt="" />
+                      <img src="/images/pic08.jpg" alt="" />
                     </span>
                   </div>
                   <div className="4u">
                     <span className="image fit">
-                      <img src="/public/images/pic09.jpg" alt="" />
+                      <img src="/images/pic09.jpg" alt="" />
                     </span>
                   </div>
                   <div className="4u">
                     <span className="image fit">
-                      <img src="/public/images/pic09.jpg" alt="" />
+                      <img src="/images/pic09.jpg" alt="" />
                     </span>
                   </div>
                   <div className="4u">
                     <span className="image fit">
-                      <img src="/public/images/pic10.jpg" alt="" />
+                      <img src="/images/pic10.jpg" alt="" />
                     </span>
                   </div>
                   <div className="4u">
                     <span className="image fit">
-                      <img src="/public/images/pic08.jpg" alt="" />
+                      <img src="/images/pic08.jpg" alt="" />
                     </span>
                   </div>
                 </div>
@@ -694,7 +694,7 @@ export default () => (
               <h4>Left &amp; Right</h4>
               <p>
                 <span className="image left">
-                  <img src="/public/images/pic09.jpg" alt="" />
+                  <img src="/images/pic09.jpg" alt="" />
                 </span>
                 Lorem ipsum dolor sit accumsan interdum nisi, quis tincidunt
                 felis sagittis eget. tempus euismod. Vestibulum ante ipsum
@@ -710,7 +710,7 @@ export default () => (
               </p>
               <p>
                 <span className="image right">
-                  <img src="/public/images/pic10.jpg" alt="" />
+                  <img src="/images/pic10.jpg" alt="" />
                 </span>
                 Lorem ipsum dolor sit accumsan interdum nisi, quis tincidunt
                 felis sagittis eget. tempus euismod. Vestibulum ante ipsum

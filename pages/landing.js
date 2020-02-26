@@ -35,7 +35,7 @@ export default () => (
           <section>
             <Link href="/generic">
               <a className="image">
-                <img src="/public/images/pic08.jpg" alt="" />
+                <img src="/images/pic08.jpg" alt="" />
               </a>
             </Link>
             <div className="content">
@@ -63,7 +63,7 @@ export default () => (
           <section>
             <Link href="/generic">
               <a className="image">
-                <img src="/public/images/pic09.jpg" alt="" />
+                <img src="/images/pic09.jpg" alt="" />
               </a>
             </Link>
             <div className="content">
@@ -91,7 +91,7 @@ export default () => (
           <section>
             <Link href="/generic">
               <a className="image">
-                <img src="/public/images/pic10.jpg" alt="" />
+                <img src="/images/pic10.jpg" alt="" />
               </a>
             </Link>
             <div className="content">
