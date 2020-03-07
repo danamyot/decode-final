@@ -3,7 +3,7 @@ import Head from "next/head";
 import Layout from "../components/Layout";
 
 export default () => (
-  <Layout>
+  <Layout pageName="elements">
     <Head>
       <title>Elements Page</title>
       <meta name="description" content="Elements Page" />

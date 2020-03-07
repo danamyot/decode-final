@@ -56,7 +56,7 @@ class Layout extends React.Component {
         </Head>
         <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
 
-        <div id="wrapper">
+        <div id="wrapper" className={`page-${this.props.pageName}`}>
           <Header onToggleMenu={this.handleToggleMenu} />
           {this.props.children}
           <Contact />

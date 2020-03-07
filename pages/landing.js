@@ -5,7 +5,7 @@ import Layout from "../components/Layout";
 import BannerLanding from "../components/BannerLanding";
 
 export default () => (
-  <Layout>
+  <Layout pageName="landing">
     <Head>
       <title>Landing Page</title>
       <meta name="description" content="Landing Page" />

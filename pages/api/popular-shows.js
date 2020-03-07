@@ -7,18 +7,17 @@ const BASE_TVDB_URL = "https://api.thetvdb.com";
 const TVDB_TOKEN =
   "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODQwNTc1NDcsImlkIjoiRGFuIEFteW90Iiwib3JpZ19pYXQiOjE1ODM0NTI3NDcsInVzZXJpZCI6MjI2MjU5MywidXNlcm5hbWUiOiJkYW5hbXlvdCJ9.GAybuWqSaNSBpm2gYNWVwdp9NKorEsyEmhTg6ypieYs1sY4eR-k6m8L1-wgFxqIuDDn_zx92lSnjvsF06RKJHGwtuo-dcymTIRE6jV6V5ZAJJRISFjR41pf6Iy3oQqG1TVnossjPnz30LqV0SdbF63TC4vja_xGBvSwlmMXMWr1xuwdYYIuyaEGa1irY6jILOQnbuBGOIRfz71TZ612ybC7BOUbgPUjYh6dCJ3lwRaX00666Ny9_GV1M02Rfb9lzOblOeTg1i62lIZhLJzjlUITbl1foeK6OKQl_n9VMaSdI0jr85xO-sMXCBkt1p2DqGOI0dybO_cpjWlibqKU7qQ";
 
-export default async (_, res) => {
+export default async (req, res) => {
   const trendingShows = await (
-    await fetch(`${BASE_TRAKT_URL}/shows/popular`, {
+    await fetch(`${BASE_TRAKT_URL}/shows/popular?limit=${req.query.limit}`, {
       headers: {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
-        "trakt-api-key": TRAKT_API_KEY
+        "trakt-api-key": TRAKT_API_KEY,
+        "X-Pagination-Limit": 12
       }
     })
   ).json();
-
-  console.log(trendingShows);
 
   const showsWithImage = await Promise.all(
     trendingShows.map(async showInfo => {

@@ -1,0 +1,17 @@
+.page-index {
+  .tiles {
+    justify-content: center;
+  }
+
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+
+    @media screen and (max-width: 760px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
