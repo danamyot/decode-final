@@ -3,7 +3,7 @@ import fetch from "isomorphic-unfetch";
 import useSWR from "swr";
 
 import Layout from "../components/Layout";
-import Banner from "../components/Banner";
+import BannerSearch from "../components/BannerSearch";
 import GlossCard from "../components/GlossCard";
 
 const API_URL = "http://localhost:3000/api/popular-shows?limit=12";
@@ -19,7 +19,7 @@ const Index = ({ initialData }) => {
   return (
     <Layout pageName="index">
       <div>
-        <Banner />
+        <BannerSearch />
 
         <div id="main">
           <section id="one" className="tiles">

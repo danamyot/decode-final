@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 import Layout from "../components/Layout";
-import BannerLanding from "../components/BannerLanding";
+import Banner from "../components/Banner";
 
 export default () => (
   <Layout pageName="landing">
@@ -12,7 +12,7 @@ export default () => (
     </Head>
 
     <div>
-      <BannerLanding />
+      <Banner />
 
       <div id="main">
         <section id="one">
