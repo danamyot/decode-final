@@ -4,7 +4,7 @@ import useSWR from "swr";
 
 import Layout from "../components/Layout";
 import BannerSearch from "../components/BannerSearch";
-import GlossCard from "../components/GlossCard";
+import ShowCard from "../components/ShowCard";
 
 const API_URL = "http://localhost:3000/api/popular-shows?limit=12";
 
@@ -29,7 +29,9 @@ const Index = ({ initialData }) => {
               </header>
               <div className="card-container">
                 {data
-                  ? data.map(show => <GlossCard show={show} />)
+                  ? data.map(show => (
+                      <ShowCard key={show.ids.trakt} show={show} />
+                    ))
                   : "loading..."}
               </div>
             </div>
