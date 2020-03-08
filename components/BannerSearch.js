@@ -2,13 +2,13 @@ const BannerSearch = props => (
   <section id="banner" className="major">
     <div className="inner">
       <header className="major">
-        <h1>Hi, my name is Forty</h1>
+        <h1>Search Trakr.tv</h1>
       </header>
       <div className="content">
         <p>
-          A responsive site template designed by HTML5 UP
+          Trakr.tv is better with an account.
           <br />
-          and released under the Creative Commons.
+          Sign up to get started.
         </p>
         <ul className="actions">
           <li>
