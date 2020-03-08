@@ -42,7 +42,9 @@ class Layout extends React.Component {
         }`}
       >
         <Head>
-          <title>Next.js Starter</title>
+          <title>
+            Trakr.tv - Track and follow all of your favorite TV shows
+          </title>
           <meta name="description" content="Next.js Starter - Forty" />
           <link href="/css/skel.css" rel="stylesheet" />
           <link
