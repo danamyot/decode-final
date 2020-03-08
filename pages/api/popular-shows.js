@@ -1,7 +1,7 @@
 import fetch from "isomorphic-unfetch";
 
 const BASE_TRAKT_URL = "https://api.trakt.tv";
-const TRAKT_API_KEY =
+const TRAKT_CLIENT_ID =
   "72708317a1318fd9267b67ad106f259bcf41fdf9ef449d06b8a00ca369f54393";
 const BASE_TVDB_URL = "https://api.thetvdb.com";
 const TVDB_TOKEN =
@@ -13,7 +13,7 @@ export default async (req, res) => {
       headers: {
         "Content-Type": "application/json",
         "trakt-api-version": "2",
-        "trakt-api-key": TRAKT_API_KEY,
+        "trakt-api-key": TRAKT_CLIENT_ID,
         "X-Pagination-Limit": 12
       }
     })
