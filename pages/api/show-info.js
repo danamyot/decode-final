@@ -5,7 +5,7 @@ const TRAKT_CLIENT_ID =
   "72708317a1318fd9267b67ad106f259bcf41fdf9ef449d06b8a00ca369f54393";
 const BASE_TVDB_URL = "https://api.thetvdb.com";
 const TVDB_TOKEN =
-  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODQwNTc1NDcsImlkIjoiRGFuIEFteW90Iiwib3JpZ19pYXQiOjE1ODM0NTI3NDcsInVzZXJpZCI6MjI2MjU5MywidXNlcm5hbWUiOiJkYW5hbXlvdCJ9.GAybuWqSaNSBpm2gYNWVwdp9NKorEsyEmhTg6ypieYs1sY4eR-k6m8L1-wgFxqIuDDn_zx92lSnjvsF06RKJHGwtuo-dcymTIRE6jV6V5ZAJJRISFjR41pf6Iy3oQqG1TVnossjPnz30LqV0SdbF63TC4vja_xGBvSwlmMXMWr1xuwdYYIuyaEGa1irY6jILOQnbuBGOIRfz71TZ612ybC7BOUbgPUjYh6dCJ3lwRaX00666Ny9_GV1M02Rfb9lzOblOeTg1i62lIZhLJzjlUITbl1foeK6OKQl_n9VMaSdI0jr85xO-sMXCBkt1p2DqGOI0dybO_cpjWlibqKU7qQ";
+  "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODQ0OTIyMzgsImlkIjoiRGFuIEFteW90Iiwib3JpZ19pYXQiOjE1ODM4ODc0MzgsInVzZXJpZCI6MjI2MjU5MywidXNlcm5hbWUiOiJkYW5hbXlvdCJ9.fMxWqmmp3sEhihVuRzo_fFYZtwG7T30AOztP02c7mVAq43RvstRd3tlhqZW1Uc7WLIOSkDHgrc0hnm-LBjMAgOGlQO3d00bnARK-WffpVAOcmUtrI6YQjUsXruwRzULIsroS1KPoVtx4AcEDjTuCv9xyt_Zxjqa6xtKwd8GXM10xK2vK7dxgg0JIgGLqwI2-gTQC7i8HK5i-lf_wLQcmASj3dgetqvnD6tTcs1nusYP3EhGu6nZW1uK2eXPnXZT4vGvzrLjjths9QfM0R1nGW5QWwZ93nnIqzzwI2srww7F6QdeAaEAn4mfVte8SQprNWFUkGPhGKcgEArn3OqBhmg";
 
 export default async (req, res) => {
   const fullShowInfo = await (
@@ -17,8 +17,6 @@ export default async (req, res) => {
       }
     })
   ).json();
-
-  fullShowInfo.ids.tvdb;
 
   const [showPosters, showFanart, showSeries] = await Promise.all([
     fetch(
@@ -36,9 +34,9 @@ export default async (req, res) => {
   ]);
 
   const imageData = {
-    posters: await showPosters.json(),
-    fanart: await showFanart.json(),
-    series: await showSeries.json()
+    posters: (await showPosters.json()).data,
+    fanart: (await showFanart.json()).data,
+    series: (await showSeries.json()).data
   };
 
   const showWithImage = {

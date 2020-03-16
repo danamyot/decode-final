@@ -3,7 +3,7 @@ import Link from "next/link";
 const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
 
 const ShowCard = ({ show }) => (
-  <Link href="/shows/[showSlug]" as={`/shows/${show.ids.slug}`}>
+  <Link href="/shows/[showId]" as={`/shows/${show.ids.slug}`}>
     <a>
       <div className="b-game-card">
         <div
