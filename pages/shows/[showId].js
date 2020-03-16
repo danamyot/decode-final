@@ -70,7 +70,7 @@ const ShowPage = ({ initialData }) => {
             {data.seasons.map(season =>
               season.number > 0 ? (
                 <section key={season.number}>
-                  <Link href="/generic">
+                  <Link href={`${router.query.showId}/season/${season.number}`}>
                     <a className="image">
                       <img
                         src={`${BASE_TVDB_IMG_URL}/${
@@ -91,7 +91,9 @@ const ShowPage = ({ initialData }) => {
                       <p>Episodes: {season.aired_episodes}</p>
                       <ul className="actions">
                         <li>
-                          <Link href="/generic">
+                          <Link
+                            href={`${router.query.showId}/season/${season.number}`}
+                          >
                             <a className="button">Learn more</a>
                           </Link>
                         </li>
