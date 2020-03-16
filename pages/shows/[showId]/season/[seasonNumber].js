@@ -26,7 +26,7 @@ const ShowPage = ({ initialData }) => {
       : ""
   }`;
 
-  process.browser ? console.log(data) : "";
+  console.log(router.query);
 
   return (
     <Layout pageName="show-id">

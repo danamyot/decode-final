@@ -3,6 +3,7 @@
 - [ ] axios for auth handling
 - [ ] Better handling of external (TVDB/TRAKT) API errors
 - [ ] Capitalize genres in show page (front end)
+- [ ] Episodes in a slider instead of season image in show info page - How to do this effeiciently, lots of episodes and images to load. New endpoint?
 
 ## Questions
 

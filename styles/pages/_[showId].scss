@@ -1,0 +1,14 @@
+.page-show-id {
+  .spotlights {
+    .image {
+      display: flex;
+      justify-content: center;
+
+      img {
+        margin: 2rem;
+        max-height: 25rem;
+        width: auto;
+      }
+    }
+  }
+}
