@@ -554,7 +554,6 @@ export default () => (
                       type="text"
                       name="demo-name"
                       id="demo-name"
-                      value=""
                       placeholder="Name"
                     />
                   </div>

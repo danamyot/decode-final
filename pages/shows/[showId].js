@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import fetch from "isomorphic-unfetch";
 import useSWR from "swr";
+import moment from "moment";
 
 import Layout from "components/Layout";
 import Banner from "components/Banner";
@@ -86,7 +87,10 @@ const ShowPage = ({ initialData }) => {
                   <div className="content">
                     <div className="inner">
                       <header className="major">
-                        <h3>Season {season.number}</h3>
+                        <h3>
+                          Season {season.number} (
+                          {moment(season.first_aired).year()})
+                        </h3>
                       </header>
                       <p>Episodes: {season.aired_episodes}</p>
                       <ul className="actions">

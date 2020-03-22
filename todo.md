@@ -11,3 +11,4 @@
 - [ ] Is the first page the only one that's truly rendered server-side?
 - [ ] What is, and how do I set up CORS?
 - [ ] How do I quickly get a show image in the front end? Example: random top 10 show image in the banner background.
+- [ ] How do I handle errors in the backend and front end?
