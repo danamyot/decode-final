@@ -74,8 +74,11 @@ const ShowPage = ({ initialData }) => {
           </section>
           <section id="two" className="cast">
             <div className="inner">
+              <header className="major">
+                <h2>Cast</h2>
+              </header>
               <div className="cast-container">
-                {data.cast.map(castMember => (
+                {data.cast.slice(0, 10).map(castMember => (
                   <div className="cast-member">
                     <div className="cast-member-img-container">
                       <div

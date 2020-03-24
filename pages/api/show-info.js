@@ -42,7 +42,10 @@ export default async (req, res) => {
   //
   //
 
-  const tvdbHeaders = { Authorization: "Bearer " + TVDB_TOKEN };
+  const tvdbHeaders = {
+    Authorization: "Bearer " + TVDB_TOKEN,
+    "Accept-Language": "en"
+  };
   const [castInfo, posters, fanart, seriesArt, seasonArt] = await Promise.all([
     (
       await fetch(`${BASE_TVDB_URL}/series/${showInfo.ids.tvdb}/actors`, {

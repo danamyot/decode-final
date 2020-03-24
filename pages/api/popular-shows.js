@@ -27,7 +27,12 @@ export default async (req, res) => {
       const showImageData = await (
         await fetch(
           `${BASE_TVDB_URL}/series/${showInfo.ids.tvdb}/images/query?keyType=poster`,
-          { headers: { Authorization: "Bearer " + TVDB_TOKEN } }
+          {
+            headers: {
+              Authorization: "Bearer " + TVDB_TOKEN,
+              "Accept-Language": "en"
+            }
+          }
         )
       ).json();
 
@@ -37,6 +42,7 @@ export default async (req, res) => {
 
       newShow.imageData = showImageData.data[randShowImage];
 
+      console.log(showImageData.data[randShowImage]);
       return newShow;
     })
   );
