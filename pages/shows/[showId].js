@@ -7,6 +7,7 @@ import moment from "moment";
 
 import Layout from "components/Layout";
 import Banner from "components/Banner";
+import { arrayCapitalize } from "utils/helpers";
 
 const API_URL = "http://localhost:3000/api/show-info";
 const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
@@ -21,13 +22,13 @@ const ShowPage = ({ initialData }) => {
   const { data } = useSWR(`${API_URL}?id=${router.query.showId}`, fetcher, {
     initialData
   });
-  const bannerSubHeader = `Aired: ${data.year} | ${data.network} | Status: ${
+  const bannerSubHeader = `Aired: ${data.year} | ${data.network} ${
     data.status !== "returning series" && data.status !== "in production"
-      ? data.status
+      ? `| Status: ${data.status}`
       : ""
   }`;
 
-  process.browser ? console.log(data) : "";
+  process.browser && console.log(data);
 
   return (
     <Layout pageName="show-id">
@@ -49,25 +50,53 @@ const ShowPage = ({ initialData }) => {
               <header className="major">
                 <h2>Overview</h2>
               </header>
-              <p>{`Genres: ${data.genres.join(", ")}`}</p>
+              <p>{`Genres: ${arrayCapitalize(data.genres).join(", ")}`}</p>
               <p>{data.overview}</p>
               <p>
                 <a href={data.homepage}>Homepage</a>
               </p>
-              <h4>Trailer</h4>
-              <iframe
-                width="560"
-                height="315"
-                src={`https://www.youtube.com/embed/${
-                  data.trailer.split("?v=")[1]
-                }`}
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
+              {data.trailer && (
+                <>
+                  <h4>Trailer</h4>
+                  <iframe
+                    width="560"
+                    height="315"
+                    src={`https://www.youtube.com/embed/${
+                      data.trailer.split("?v=")[1]
+                    }`}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  ></iframe>
+                </>
+              )}
             </div>
           </section>
-          <section id="two" className="spotlights">
+          <section id="two" className="cast">
+            <div className="inner">
+              <div className="cast-container">
+                {data.cast.map(castMember => (
+                  <div className="cast-member">
+                    <div className="cast-member-img-container">
+                      <div
+                        style={{
+                          backgroundImage: `URL(${BASE_TVDB_IMG_URL}/${castMember.image})`
+                        }}
+                        className="cast-member-img"
+                      ></div>
+                    </div>
+                    <p className="cast-member-role" title={castMember.role}>
+                      {castMember.role}
+                    </p>
+                    <p className="cast-member-actor" title={castMember.name}>
+                      {castMember.name}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+          <section id="three" className="spotlights">
             {data.seasons.map(season =>
               season.number > 0 ? (
                 <section key={season.number}>

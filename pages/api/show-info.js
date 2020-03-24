@@ -14,51 +14,78 @@ export default async (req, res) => {
     "trakt-api-key": TRAKT_CLIENT_ID
   };
 
-  const fullShowInfo = await (
-    await fetch(`${BASE_TRAKT_URL}/shows/${req.query.id}?extended=full`, {
-      headers: traktHeader
-    })
-  ).json();
+  //
+  //
+  // TRAKT API
+  //
+  //
 
-  const fullSeasonInfo = await (
-    await fetch(
-      `${BASE_TRAKT_URL}/shows/${req.query.id}/seasons?extended=full`,
-      {
+  const [showInfo, seasonInfo] = await Promise.all([
+    (
+      await fetch(`${BASE_TRAKT_URL}/shows/${req.query.id}?extended=full`, {
         headers: traktHeader
-      }
-    )
-  ).json();
+      })
+    ).json(),
+    (
+      await fetch(
+        `${BASE_TRAKT_URL}/shows/${req.query.id}/seasons?extended=full`,
+        {
+          headers: traktHeader
+        }
+      )
+    ).json()
+  ]);
+
+  //
+  //
+  // TVDB API
+  //
+  //
 
   const tvdbHeaders = { Authorization: "Bearer " + TVDB_TOKEN };
-  const [showPosters, showFanart, showSeries, showSeason] = await Promise.all([
-    fetch(
-      `${BASE_TVDB_URL}/series/${fullShowInfo.ids.tvdb}/images/query?keyType=poster`,
-      { headers: tvdbHeaders }
-    ),
-    fetch(
-      `${BASE_TVDB_URL}/series/${fullShowInfo.ids.tvdb}/images/query?keyType=fanart`,
-      { headers: tvdbHeaders }
-    ),
-    fetch(
-      `${BASE_TVDB_URL}/series/${fullShowInfo.ids.tvdb}/images/query?keyType=series`,
-      { headers: tvdbHeaders }
-    ),
-    fetch(
-      `${BASE_TVDB_URL}/series/${fullShowInfo.ids.tvdb}/images/query?keyType=season`,
-      { headers: tvdbHeaders }
-    )
+  const [castInfo, posters, fanart, seriesArt, seasonArt] = await Promise.all([
+    (
+      await fetch(`${BASE_TVDB_URL}/series/${showInfo.ids.tvdb}/actors`, {
+        headers: tvdbHeaders
+      })
+    ).json(),
+    (
+      await fetch(
+        `${BASE_TVDB_URL}/series/${showInfo.ids.tvdb}/images/query?keyType=poster`,
+        { headers: tvdbHeaders }
+      )
+    ).json(),
+    (
+      await fetch(
+        `${BASE_TVDB_URL}/series/${showInfo.ids.tvdb}/images/query?keyType=fanart`,
+        { headers: tvdbHeaders }
+      )
+    ).json(),
+    (
+      await fetch(
+        `${BASE_TVDB_URL}/series/${showInfo.ids.tvdb}/images/query?keyType=series`,
+        { headers: tvdbHeaders }
+      )
+    ).json(),
+    (
+      await fetch(
+        `${BASE_TVDB_URL}/series/${showInfo.ids.tvdb}/images/query?keyType=season`,
+        { headers: tvdbHeaders }
+      )
+    ).json()
   ]);
 
   const imageData = {
-    posters: (await showPosters.json()).data,
-    fanart: (await showFanart.json()).data,
-    series: (await showSeries.json()).data,
-    season: (await showSeason.json()).data
+    posters: posters.data,
+    fanart: fanart.data,
+    series: seriesArt.data,
+    season: seasonArt.data
   };
 
   const showWithImage = {
-    ...fullShowInfo,
-    seasons: [...fullSeasonInfo],
+    ...showInfo,
+    cast: [...castInfo.data],
+    seasons: [...seasonInfo],
     imageData
   };
 
