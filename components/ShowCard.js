@@ -5,9 +5,9 @@ const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
 const ShowCard = ({ show }) => (
   <Link href="/shows/[showId]" as={`/shows/${show.ids.slug}`}>
     <a>
-      <div className="b-game-card">
+      <div className="show-card">
         <div
-          className="b-game-card__cover"
+          className="show-card__cover"
           style={{
             backgroundImage: `url('${BASE_TVDB_IMG_URL}/${show.imageData.fileName}')`
           }}

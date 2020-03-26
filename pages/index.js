@@ -27,7 +27,7 @@ const Index = ({ initialData }) => {
               <header className="major">
                 <h2>Popular Shows</h2>
               </header>
-              <div className="card-container">
+              <div className="show-card-container">
                 {data
                   ? data.map(show => (
                       <ShowCard key={show.ids.trakt} show={show} />

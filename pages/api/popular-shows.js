@@ -42,7 +42,6 @@ export default async (req, res) => {
 
       newShow.imageData = showImageData.data[randShowImage];
 
-      console.log(showImageData.data[randShowImage]);
       return newShow;
     })
   );
