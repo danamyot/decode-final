@@ -5,7 +5,8 @@ const Header = props => (
   <header id="header" className="alt">
     <Link href="/">
       <a className="logo">
-        <strong>Forty</strong> <span>by HTML5 UP</span>
+        <strong>Trakr</strong>
+        <span>.tv</span>
       </a>
     </Link>
     <nav>

@@ -1,9 +1,9 @@
 import Head from "next/head";
 
-import Layout from "../components/Layout";
+import Layout from "components/Layout";
 
 export default () => (
-  <Layout>
+  <Layout pageName="generic">
     <Head>
       <title>Generic Page</title>
       <meta name="description" content="Generic Page" />

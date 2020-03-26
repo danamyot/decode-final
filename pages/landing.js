@@ -1,18 +1,18 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import Layout from "../components/Layout";
-import BannerLanding from "../components/BannerLanding";
+import Layout from "components/Layout";
+import Banner from "components/Banner";
 
 export default () => (
-  <Layout>
+  <Layout pageName="landing">
     <Head>
       <title>Landing Page</title>
       <meta name="description" content="Landing Page" />
     </Head>
 
     <div>
-      <BannerLanding />
+      <Banner />
 
       <div id="main">
         <section id="one">

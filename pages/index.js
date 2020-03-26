@@ -1,94 +1,51 @@
 import Link from "next/link";
+import fetch from "isomorphic-unfetch";
+import useSWR from "swr";
 
-import Layout from "../components/Layout";
-import Banner from "../components/Banner";
+import Layout from "components/Layout";
+import BannerSearch from "components/BannerSearch";
+import ShowCard from "components/ShowCard";
 
-export default () => (
-  <Layout>
-    <div>
-      <Banner />
+const API_URL = "http://localhost:3000/api/popular-shows?limit=12";
 
-      <div id="main">
-        <section id="one" className="tiles">
-          <article style={{ backgroundImage: `url('/images/pic01.jpg')` }}>
-            <header className="major">
-              <h3>Aliquam</h3>
-              <p>Ipsum dolor sit amet</p>
-            </header>
-            <Link href="/landing">
-              <a className="link primary"></a>
-            </Link>
-          </article>
-          <article style={{ backgroundImage: `url('/images/pic02.jpg')` }}>
-            <header className="major">
-              <h3>Tempus</h3>
-              <p>feugiat amet tempus</p>
-            </header>
-            <Link href="/landing">
-              <a className="link primary"></a>
-            </Link>
-          </article>
-          <article style={{ backgroundImage: `url('/images/pic03.jpg')` }}>
-            <header className="major">
-              <h3>Magna</h3>
-              <p>Lorem etiam nullam</p>
-            </header>
-            <Link href="/landing">
-              <a className="link primary"></a>
-            </Link>
-          </article>
-          <article style={{ backgroundImage: `url('/images/pic04.jpg')` }}>
-            <header className="major">
-              <h3>Ipsum</h3>
-              <p>Nisl sed aliquam</p>
-            </header>
-            <Link href="/landing">
-              <a className="link primary"></a>
-            </Link>
-          </article>
-          <article style={{ backgroundImage: `url('/images/pic05.jpg')` }}>
-            <header className="major">
-              <h3>Consequat</h3>
-              <p>Ipsum dolor sit amet</p>
-            </header>
-            <Link href="/landing">
-              <a className="link primary"></a>
-            </Link>
-          </article>
-          <article style={{ backgroundImage: `url('/images/pic06.jpg')` }}>
-            <header className="major">
-              <h3>Etiam</h3>
-              <p>Feugiat amet tempus</p>
-            </header>
-            <Link href="/landing">
-              <a className="link primary"></a>
-            </Link>
-          </article>
-        </section>
-        <section id="two">
-          <div className="inner">
-            <header className="major">
-              <h2>Massa libero</h2>
-            </header>
-            <p>
-              Nullam et orci eu lorem consequat tincidunt vivamus et sagittis
-              libero. Mauris aliquet magna magna sed nunc rhoncus pharetra.
-              Pellentesque condimentum sem. In efficitur ligula tate urna.
-              Maecenas laoreet massa vel lacinia pellentesque lorem ipsum dolor.
-              Nullam et orci eu lorem consequat tincidunt. Vivamus et sagittis
-              libero. Mauris aliquet magna magna sed nunc rhoncus amet pharetra
-              et feugiat tempus.
-            </p>
-            <ul className="actions">
-              <li>
-                <Link href="/landing">
-                  <a className="button next">Get Started</a>
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </section>
+async function fetcher(...args) {
+  const res = await fetch(...args);
+  return res.json();
+}
+
+const Index = ({ initialData }) => {
+  const { data } = useSWR(API_URL, fetcher, { initialData });
+
+  return (
+    <Layout pageName="index">
+      <div>
+        <BannerSearch />
+
+        <div id="main">
+          <section id="one" className="tiles">
+            <div className="inner">
+              <header className="major">
+                <h2>Popular Shows</h2>
+              </header>
+              <div className="show-card-container">
+                {data
+                  ? data.map(show => (
+                      <ShowCard key={show.ids.trakt} show={show} />
+                    ))
+                  : "loading..."}
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
-  </Layout>
-);
+    </Layout>
+  );
+};
+
+Index.getInitialProps = async function() {
+  const data = await fetcher(API_URL);
+
+  return { initialData: data };
+};
+
+export default Index;
