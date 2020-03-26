@@ -4,12 +4,14 @@ import { useRouter } from "next/router";
 import fetch from "isomorphic-unfetch";
 import useSWR from "swr";
 import moment from "moment";
+import Slider from "react-slick";
 
 import Layout from "components/Layout";
 import Banner from "components/Banner";
+import ShowCard from "components/ShowCard";
 import { arrayCapitalize } from "utils/helpers";
 
-const API_URL = "http://localhost:3000/api/show-info";
+const BASE_API_URL = "http://localhost:3000";
 const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
 
 async function fetcher(...args) {
@@ -17,59 +19,89 @@ async function fetcher(...args) {
   return res.json();
 }
 
-const ShowPage = ({ initialData }) => {
+const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
   const router = useRouter();
-  const { data } = useSWR(`${API_URL}?id=${router.query.showId}`, fetcher, {
-    initialData
-  });
-  const bannerSubHeader = `Aired: ${data.year} | ${data.network} ${
-    data.status !== "returning series" && data.status !== "in production"
-      ? `| Status: ${data.status}`
+  const { data: showData } = useSWR(
+    `${BASE_API_URL}/api/show-info?id=${router.query.showId}`,
+    fetcher,
+    {
+      initialData: initialShowData
+    }
+  );
+  process.browser && console.log(showData);
+  const { data: relatedShowsData } = useSWR(
+    `${BASE_API_URL}/api/related-shows?id=${router.query.showId}&limit=8`,
+    fetcher,
+    {
+      initialData: initialRelatedShowsData
+    }
+  );
+  const bannerSubHeader = `Aired: ${showData.year} | ${showData.network} ${
+    showData.status !== "returning series" &&
+    showData.status !== "in production"
+      ? `| Status: ${showData.status}`
       : ""
   }`;
-
-  process.browser && console.log(data);
+  const castSliderSettings = {
+    infinite: false,
+    slidesToShow: 6,
+    slidesToScroll: 3
+  };
+  const relatedSliderSettings = {
+    infinite: false,
+    slidesToShow: 4,
+    slidesToScroll: 4
+  };
 
   return (
     <Layout pageName="show-id">
       <Head>
-        <title>{data.title} | Trakr.tv</title>
-        <meta name="description" content={`${data.title} show information.`} />
+        <title>{showData.title} | Trakr.tv</title>
+        <meta
+          name="description"
+          content={`${showData.title} show information.`}
+        />
       </Head>
 
       <div>
         <Banner
-          heading={data.title}
+          heading={showData.title}
           subHeading={bannerSubHeader}
-          background={`${BASE_TVDB_IMG_URL}/${data.imageData.fanart[0].fileName}`}
+          background={`${BASE_TVDB_IMG_URL}/${showData.imageData.fanart[0].fileName}`}
         />
 
         <div id="main">
-          <section id="one">
+          <section id="one" className="show-info">
             <div className="inner">
-              <header className="major">
-                <h2>Overview</h2>
-              </header>
-              <p>{`Genres: ${arrayCapitalize(data.genres).join(", ")}`}</p>
-              <p>{data.overview}</p>
-              <p>
-                <a href={data.homepage}>Homepage</a>
-              </p>
-              {data.trailer && (
-                <>
-                  <h4>Trailer</h4>
-                  <iframe
-                    width="560"
-                    height="315"
-                    src={`https://www.youtube.com/embed/${
-                      data.trailer.split("?v=")[1]
-                    }`}
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
-                </>
-              )}
+              <div>
+                <header className="major">
+                  <h2>Overview</h2>
+                </header>
+                <p>{`Genres: ${arrayCapitalize(showData.genres).join(
+                  ", "
+                )}`}</p>
+                <p>{showData.overview}</p>
+                <p>
+                  <a href={showData.homepage}>Homepage</a>
+                </p>
+              </div>
+              <div className="show-trailer">
+                {showData.trailer && (
+                  <>
+                    <h4>Trailer</h4>
+                    <iframe
+                      width="560"
+                      height="315"
+                      src={`https://www.youtube.com/embed/${
+                        showData.trailer.split("?v=")[1]
+                      }`}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </>
+                )}
+              </div>
             </div>
           </section>
           <section id="two" className="cast">
@@ -78,36 +110,38 @@ const ShowPage = ({ initialData }) => {
                 <h2>Cast</h2>
               </header>
               <div className="cast-container">
-                {data.cast.slice(0, 10).map(castMember => (
-                  <div className="cast-member">
-                    <div className="cast-member-img-container">
-                      <div
-                        style={{
-                          backgroundImage: `URL(${BASE_TVDB_IMG_URL}/${castMember.image})`
-                        }}
-                        className="cast-member-img"
-                      ></div>
+                <Slider {...castSliderSettings}>
+                  {showData.cast.slice(0, 10).map((castMember, i) => (
+                    <div key={i} className="cast-member">
+                      <div className="cast-member-img-container">
+                        <div
+                          style={{
+                            backgroundImage: `URL(${BASE_TVDB_IMG_URL}/${castMember.image})`
+                          }}
+                          className="cast-member-img"
+                        ></div>
+                      </div>
+                      <p className="cast-member-role" title={castMember.role}>
+                        {castMember.role}
+                      </p>
+                      <p className="cast-member-actor" title={castMember.name}>
+                        {castMember.name}
+                      </p>
                     </div>
-                    <p className="cast-member-role" title={castMember.role}>
-                      {castMember.role}
-                    </p>
-                    <p className="cast-member-actor" title={castMember.name}>
-                      {castMember.name}
-                    </p>
-                  </div>
-                ))}
+                  ))}
+                </Slider>
               </div>
             </div>
           </section>
           <section id="three" className="spotlights">
-            {data.seasons.map(season =>
+            {showData.seasons.map(season =>
               season.number > 0 ? (
                 <section key={season.number}>
                   <Link href={`${router.query.showId}/season/${season.number}`}>
                     <a className="image">
                       <img
                         src={`${BASE_TVDB_IMG_URL}/${
-                          data.imageData.season.find(
+                          showData.imageData.season.find(
                             seasonImage =>
                               seasonImage.subKey === `${season.number}`
                           ).fileName
@@ -118,12 +152,12 @@ const ShowPage = ({ initialData }) => {
                   </Link>
                   <div className="content">
                     <div className="inner">
-                      <header className="major">
+                      <div className="major">
                         <h3>
                           Season {season.number} (
                           {moment(season.first_aired).year()})
                         </h3>
-                      </header>
+                      </div>
                       <p>Episodes: {season.aired_episodes}</p>
                       <ul className="actions">
                         <li>
@@ -142,6 +176,21 @@ const ShowPage = ({ initialData }) => {
               )
             )}
           </section>
+          <section id="four" className="related-shows">
+            <div className="inner">
+              <header className="major">
+                <h2>Related Shows</h2>
+              </header>
+              <Slider {...relatedSliderSettings}>
+                {relatedShowsData.map(show => (
+                  <div className="related-show-slide">
+                    <ShowCard key={show.ids.trakt} show={show} />
+                  </div>
+                ))}
+              </Slider>
+              <div className="show-card-container"></div>
+            </div>
+          </section>
         </div>
       </div>
     </Layout>
@@ -149,9 +198,17 @@ const ShowPage = ({ initialData }) => {
 };
 
 ShowPage.getInitialProps = async function({ query }) {
-  const data = await fetcher(`${API_URL}?id=${query.showId}`);
+  const [showData, relatedShowsData] = await Promise.all([
+    await fetcher(`${BASE_API_URL}/api/show-info?id=${query.showId}`),
+    await fetcher(
+      `${BASE_API_URL}/api/related-shows?id=${query.showId}&limit=8`
+    )
+  ]);
 
-  return { initialData: data };
+  return {
+    initialShowData: showData,
+    initialRelatedShowsData: relatedShowsData
+  };
 };
 
 export default ShowPage;

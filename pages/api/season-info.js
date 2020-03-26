@@ -76,6 +76,7 @@ export default async (req, res) => {
       )
     ).json()
   ]);
+
   const imageData = {
     posters: posters.data,
     fanart: fanart.data,

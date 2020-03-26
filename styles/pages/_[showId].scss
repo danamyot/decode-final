@@ -1,4 +1,20 @@
 .page-show-id {
+  .show-info {
+    & > .inner {
+      display: flex;
+
+      @include breakpoint(medium) {
+        flex-direction: column;
+      }
+    }
+    .show-trailer {
+      margin-left: 1rem;
+
+      @include breakpoint(medium) {
+        margin-left: 0;
+      }
+    }
+  }
   .cast {
     .cast-container {
       display: grid;
@@ -7,6 +23,7 @@
     }
     .cast-member {
       text-align: center;
+      padding: 0 0.5rem;
     }
     .cast-member-img-container {
       position: relative;
@@ -44,6 +61,14 @@
         max-height: 25rem;
         width: auto;
       }
+    }
+  }
+  .related-shows {
+    .related-show-slide {
+      padding: 0 0.5rem;
+    }
+    .show-card::before {
+      box-shadow: none;
     }
   }
 }

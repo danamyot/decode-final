@@ -1,7 +1,11 @@
 const path = require("path");
 const glob = require("glob");
+const withCSS = require("@zeit/next-css");
 
-module.exports = {
+module.exports = withCSS({
+  cssLoaderOptions: {
+    url: false
+  },
   webpack: (config, { dev }) => {
     config.module.rules.push(
       {
@@ -12,8 +16,18 @@ module.exports = {
         }
       },
       {
+        test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 100000,
+            name: "[name].[ext]"
+          }
+        }
+      },
+      {
         test: /\.css$/,
-        use: ["babel-loader", "raw-loader", "postcss-loader"]
+        use: ["postcss-loader"]
       },
       {
         test: /\.s(a|c)ss$/,
@@ -44,4 +58,4 @@ module.exports = {
       "/elements": { page: "/elements" }
     };
   }
-};
+});
