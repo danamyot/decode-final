@@ -16,3 +16,8 @@
 - [ ] How do I handle errors in the backend and front end?
 - [ ] How to fetch mutltiple endpoints (ie. main show info, but then something like similar shows & extra data? for a smaller component) I want to keep the page render quick.
 - [ ] getInitialProps and SWR, am I doing it wrong?
+
+### Next Work
+
+- [ ] Axios
+- [ ]

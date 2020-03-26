@@ -1,4 +1,27 @@
 .page-show-id {
+  .slick-slider {
+    button {
+      &.slick-arrow {
+        position: absolute;
+        top: -3.5rem;
+        right: 0;
+        left: auto;
+        width: 3.5rem;
+        height: 3.5rem;
+        box-shadow: none;
+      }
+      &.slick-prev {
+        right: 3.5rem;
+
+        &::before {
+          content: "\276E";
+        }
+      }
+      &.slick-next::before {
+        content: "\276F";
+      }
+    }
+  }
   .show-info {
     & > .inner {
       display: flex;
@@ -49,6 +72,7 @@
     }
     .cast-member-actor {
       color: _palette(fg-light);
+      margin-bottom: 0;
     }
   }
   .spotlights {
