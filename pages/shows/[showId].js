@@ -11,6 +11,8 @@ import ShowCard from "components/ShowCard";
 import fetcher from "services/fetcher";
 import { arrayCapitalize } from "utils/helpers";
 
+import ProfileSVG from "public/images/profile.svg";
+
 const BASE_API_URL = "http://localhost:3000";
 const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
 
@@ -155,12 +157,18 @@ const ShowPage = ({ initialShowData }) => {
                   {showData.cast.slice(0, 10).map((castMember, i) => (
                     <div key={i} className="cast-member">
                       <div className="cast-member-img-container">
-                        <div
-                          style={{
-                            backgroundImage: `URL(${BASE_TVDB_IMG_URL}/${castMember.image})`
-                          }}
-                          className="cast-member-img"
-                        ></div>
+                        {castMember.image ? (
+                          <div
+                            style={{
+                              backgroundImage: `URL(${BASE_TVDB_IMG_URL}/${castMember.image})`
+                            }}
+                            className="cast-member-img"
+                          ></div>
+                        ) : (
+                          <div className="cast-member-img default-img">
+                            <ProfileSVG />
+                          </div>
+                        )}
                       </div>
                       <p className="cast-member-role" title={castMember.role}>
                         {castMember.role}
