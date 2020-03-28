@@ -21,6 +21,9 @@
         content: "\276F";
       }
     }
+    .slick-list {
+      padding-top: 0.5rem;
+    }
   }
   .show-info {
     & > .inner {
@@ -62,6 +65,7 @@
       height: 100%;
       background-size: 100%;
       background-position: center;
+      box-shadow: 0 0 5px 0px rgba(255, 255, 255, 0.25);
     }
     .cast-member-role {
       margin: 1em 0 0.5em;
@@ -76,14 +80,9 @@
     }
   }
   .spotlights {
-    .image {
-      display: flex;
-      justify-content: center;
-
-      img {
-        margin: 2rem;
-        max-height: 25rem;
-        width: auto;
+    > section {
+      &:nth-child(2n) {
+        flex-direction: row;
       }
     }
   }

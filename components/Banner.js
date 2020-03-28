@@ -2,7 +2,7 @@ const Banner = props => (
   <section
     id="banner"
     className="style2"
-    style={{ backgroundImage: `url(${props.background})` }}
+    style={props.background && { backgroundImage: `url(${props.background})` }}
   >
     <div className="inner">
       <header className="major">

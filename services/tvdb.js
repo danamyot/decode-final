@@ -47,6 +47,14 @@ const getShowCast = showId => {
   });
 };
 
+const getShowEpisodes = (showId, seasonNumber) => {
+  return instance
+    .get(`/series/${showId}/episodes/query?airedSeason=${seasonNumber}`)
+    .then(response => {
+      return response.data;
+    });
+};
+
 const getShowImage = (showId, imageType) => {
   return instance
     .get(`/series/${showId}/images/query?keyType=${imageType}`)
@@ -55,5 +63,6 @@ const getShowImage = (showId, imageType) => {
 
 export default {
   getShowCast,
+  getShowEpisodes,
   getShowImage
 };

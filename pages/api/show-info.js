@@ -7,9 +7,9 @@ export default async (req, res) => {
   // TRAKT API
   //
   // ----------------------------
-  const [showInfo, seasonInfo] = await Promise.all([
-    await traktService.getShowInfo(req.query.id),
-    await traktService.getShowSeasons(req.query.id)
+  const [showInfo, seasonsInfo] = await Promise.all([
+    await traktService.getShowInfo(req.query.id, "full"),
+    await traktService.getShowAllSeasons(req.query.id)
   ]);
 
   // ----------------------------
@@ -30,14 +30,14 @@ export default async (req, res) => {
   const imageData = {
     posters,
     fanart,
-    seroes: seriesArt,
+    series: seriesArt,
     season: seasonArt
   };
 
   const showWithImage = {
     ...showInfo,
     cast: [...castInfo],
-    seasons: [...seasonInfo],
+    seasons: [...seasonsInfo],
     imageData
   };
 

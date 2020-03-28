@@ -17,20 +17,33 @@
     @include vendor("display", "flex");
     @include vendor("flex-direction", "row");
     background-color: desaturate(lighten(_palette(bg-alt), 2), 1);
+
+    &:nth-child(2n) {
+      @include vendor("flex-direction", "row-reverse");
+      background-color: desaturate(lighten(_palette(bg-alt), 4), 2);
+
+      > .content {
+        @include vendor("align-items", "flex-end");
+      }
+    }
   }
 
   .image {
+    align-items: center;
     background-position: center center;
     background-size: cover;
     border-radius: 0;
-    display: block;
+    display: flex;
+    justify-content: center;
     position: relative;
     width: 30%;
 
     img {
       border-radius: 0;
       display: block;
-      width: 100%;
+      margin: 2rem;
+      max-height: 25rem;
+      width: auto;
     }
 
     &:before {
@@ -58,14 +71,6 @@
       margin: 0 auto;
       max-width: 100%;
       width: _size(inner);
-    }
-  }
-
-  &:nth-child(2n) {
-    background-color: desaturate(lighten(_palette(bg-alt), 4), 2);
-
-    > .content {
-      @include vendor("align-items", "flex-end");
     }
   }
 
