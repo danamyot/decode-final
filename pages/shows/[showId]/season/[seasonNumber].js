@@ -1,64 +1,95 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import fetch from "isomorphic-unfetch";
 import useSWR from "swr";
 import moment from "moment";
+import Slider from "react-slick";
 
 import Layout from "components/Layout";
 import Banner from "components/Banner";
 import ShowCard from "components/ShowCard";
+import fetcher from "services/fetcher";
 import { arrayCapitalize } from "utils/helpers";
 
 const BASE_API_URL = "http://localhost:3000";
 const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
 
-async function fetcher(...args) {
-  const res = await fetch(...args);
-  return res.json();
-}
-
-const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
+const ShowPage = ({ initialData }) => {
   const router = useRouter();
-  const { data: showData } = useSWR(
-    `${BASE_API_URL}/api/show-info?id=${router.query.showId}`,
-    fetcher,
-    {
-      initialData: initialShowData
-    }
-  );
-  const { data: relatedShowsData } = useSWR(
-    `${BASE_API_URL}/api/related-shows?id=${router.query.showId}&limit=8`,
-    fetcher,
-    {
-      initialData: initialRelatedShowsData
-    }
-  );
-  const bannerSubHeader = `Aired: ${showData.year} | ${showData.network} ${
-    showData.status !== "returning series" &&
-    showData.status !== "in production"
-      ? `| Status: ${showData.status}`
-      : ""
-  }`;
 
-  process.browser && console.log(showData);
+  const { data: seasonData } = useSWR(
+    `${BASE_API_URL}/api/season-info?id=${router.query.showId}&seasonNumber=${router.query.seasonNumber}`,
+    fetcher,
+    {
+      initialData: initialData
+    }
+  );
+
+  process.browser && console.log(seasonData);
+
+  const bannerSubHeader =
+    seasonData.showInfo &&
+    `Aired: ${moment(seasonData.first_aired).year()} | ${
+      seasonData.showInfo.network
+    } | ${seasonData.showInfo.certification}`;
+
+  const castSliderSettings = {
+    infinite: false,
+    slidesToShow: 6,
+    slidesToScroll: 3,
+    responsive: [
+      {
+        breakpoint: 980, // medium breakpoint
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4
+        }
+      },
+      {
+        breakpoint: 480, // xsmall breakpoint
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3
+        }
+      }
+    ]
+  };
+
+  const relatedSliderSettings = {
+    infinite: false,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    responsive: [
+      {
+        breakpoint: 736, // small breakpoint
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3
+        }
+      },
+      {
+        breakpoint: 480, // xsmall breakpoint
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2
+        }
+      }
+    ]
+  };
 
   return (
-    <Layout pageName="show-id">
+    <Layout pageName="season-id">
       <Head>
-        <title>{showData.title} | Trakr.tv</title>
+        <title>
+          {`${seasonData.title} | ${seasonData.showInfo.title}`} | Trakr.tv
+        </title>
         <meta
           name="description"
-          content={`${showData.title} show information.`}
+          content={`${seasonData.showInfo.title} ${seasonData.title}. ${seasonData.overview}`}
         />
       </Head>
-
       <div>
-        <Banner
-          heading={showData.title}
-          subHeading={bannerSubHeader}
-          background={`${BASE_TVDB_IMG_URL}/${showData.imageData.fanart[0].fileName}`}
-        />
+        <Banner heading={`${seasonData.title}`} subHeading={bannerSubHeader} />
 
         <div id="main">
           <section id="one" className="show-info">
@@ -67,117 +98,69 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
                 <header className="major">
                   <h2>Overview</h2>
                 </header>
-                <p>{`Genres: ${arrayCapitalize(showData.genres).join(
-                  ", "
-                )}`}</p>
-                <p>{showData.overview}</p>
-                <p>
-                  <a href={showData.homepage}>Homepage</a>
-                </p>
-              </div>
-              <div className="show-trailer">
-                {showData.trailer && (
-                  <>
-                    <h4>Trailer</h4>
-                    <iframe
-                      width="560"
-                      height="315"
-                      src={`https://www.youtube.com/embed/${
-                        showData.trailer.split("?v=")[1]
-                      }`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </>
-                )}
+                <p>{`Total Episodes: ${seasonData.aired_episodes}`}</p>
+                <p>{seasonData.overview}</p>
               </div>
             </div>
           </section>
-          <section id="two" className="cast">
-            <div className="inner">
-              <header className="major">
-                <h2>Cast</h2>
-              </header>
-              <div className="cast-container">
-                {showData.cast.slice(0, 10).map((castMember, i) => (
-                  <div key={i} className="cast-member">
-                    <div className="cast-member-img-container">
-                      <div
-                        style={{
-                          backgroundImage: `URL(${BASE_TVDB_IMG_URL}/${castMember.image})`
-                        }}
-                        className="cast-member-img"
-                      ></div>
-                    </div>
-                    <p className="cast-member-role" title={castMember.role}>
-                      {castMember.role}
+          <section id="two" className="episodes spotlights">
+            {seasonData.episodes.map((episode, i) => (
+              <section key={episode.number}>
+                <Link
+                  href={`/shows/${router.query.showId}/season/${router.query.seasonNumber}/episode/${episode.number}`}
+                >
+                  <a className="image">
+                    <img
+                      src={`${BASE_TVDB_IMG_URL}/${seasonData.imageData.episodes[i]}`}
+                      alt={`${seasonData.title} Episode ${episode.number}`}
+                    />
+                  </a>
+                </Link>
+                <div className="content">
+                  <div className="inner">
+                    <h4>Episode {episode.number}</h4>
+                    <header className="major">
+                      <h3>{episode.title}</h3>
+                    </header>
+                    <p>
+                      Runtime: {episode.runtime}m
+                      <br />
+                      {moment(episode.first_aired)
+                        .utc()
+                        .format("YYYY-MM-DD")}
                     </p>
-                    <p className="cast-member-actor" title={castMember.name}>
-                      {castMember.name}
-                    </p>
+                    <p>{episode.overview}</p>
+                    <ul className="actions">
+                      <li>
+                        <Link
+                          href={`/shows/${router.query.showId}/season/${router.query.seasonNumber}/episode/${episode.number}`}
+                        >
+                          <a>More</a>
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              </section>
+            ))}
           </section>
-          <section id="three" className="spotlights">
-            {showData.seasons.map(season =>
-              season.number > 0 ? (
-                <section key={season.number}>
-                  <Link href={`${router.query.showId}/season/${season.number}`}>
-                    <a className="image">
-                      <img
-                        src={`${BASE_TVDB_IMG_URL}/${
-                          showData.imageData.season.find(
-                            seasonImage =>
-                              seasonImage.subKey === `${season.number}`
-                          ).fileName
-                        }`}
-                        alt={`Season ${season.number}`}
-                      />
-                    </a>
-                  </Link>
-                  <div className="content">
-                    <div className="inner">
-                      <div className="major">
-                        <h3>
-                          Season {season.number} (
-                          {moment(season.first_aired).year()})
-                        </h3>
-                      </div>
-                      <p>Episodes: {season.aired_episodes}</p>
-                      <ul className="actions">
-                        <li>
-                          <Link
-                            href={`${router.query.showId}/season/${season.number}`}
-                          >
-                            <a className="button">Learn more</a>
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </section>
-              ) : (
-                undefined
-              )
-            )}
-          </section>
-          <section id="four" className="related-shows">
+          {/* <section id="four" className="related-shows">
             <div className="inner">
               <header className="major">
                 <h2>Related Shows</h2>
               </header>
-              <div className="show-card-container">
-                {relatedShowsData
-                  ? relatedShowsData.map(show => (
+              {relatedShowsData && (
+                <Slider {...relatedSliderSettings}>
+                  {relatedShowsData.map(show => (
+                    <div className="related-show-slide">
                       <ShowCard key={show.ids.trakt} show={show} />
-                    ))
-                  : "loading..."}
-              </div>
+                    </div>
+                  ))}
+                </Slider>
+              )}
+              <div className="show-card-container"></div>
             </div>
-          </section>
+          </section> */}
         </div>
       </div>
     </Layout>
@@ -185,16 +168,12 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
 };
 
 ShowPage.getInitialProps = async function({ query }) {
-  const [showData, relatedShowsData] = await Promise.all([
-    await fetcher(`${BASE_API_URL}/api/show-info?id=${query.showId}`),
-    await fetcher(
-      `${BASE_API_URL}/api/related-shows?id=${query.showId}&limit=8`
-    )
-  ]);
+  const data = await fetcher(
+    `${BASE_API_URL}/api/season-info?id=${query.showId}&seasonNumber=${query.seasonNumber}`
+  );
 
   return {
-    initialShowData: showData,
-    initialRelatedShowsData: relatedShowsData
+    initialData: data
   };
 };
 

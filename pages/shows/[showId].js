@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import fetch from "isomorphic-unfetch";
 import useSWR from "swr";
 import moment from "moment";
 import Slider from "react-slick";
@@ -9,18 +8,15 @@ import Slider from "react-slick";
 import Layout from "components/Layout";
 import Banner from "components/Banner";
 import ShowCard from "components/ShowCard";
+import fetcher from "services/fetcher";
 import { arrayCapitalize } from "utils/helpers";
 
 const BASE_API_URL = "http://localhost:3000";
 const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
 
-async function fetcher(...args) {
-  const res = await fetch(...args);
-  return res.json();
-}
-
-const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
+const ShowPage = ({ initialShowData }) => {
   const router = useRouter();
+
   const { data: showData } = useSWR(
     `${BASE_API_URL}/api/show-info?id=${router.query.showId}`,
     fetcher,
@@ -28,22 +24,25 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
       initialData: initialShowData
     }
   );
+
   process.browser && console.log(showData);
+
   const { data: relatedShowsData } = useSWR(
     `${BASE_API_URL}/api/related-shows?id=${router.query.showId}&limit=8`,
-    fetcher,
-    {
-      initialData: initialRelatedShowsData
-    }
+    fetcher
   );
-  const bannerSubHeader = `Aired: ${showData.year} | ${showData.network} | ${
-    showData.certification
-  } ${
-    showData.status !== "returning series" &&
-    showData.status !== "in production"
-      ? `| Status: ${showData.status}`
-      : ""
-  }`;
+
+  const bannerSubHeader =
+    showData &&
+    `Aired: ${showData.year} | ${showData.network} | ${
+      showData.certification
+    } ${
+      showData.status !== "returning series" &&
+      showData.status !== "in production"
+        ? `| Status: ${showData.status}`
+        : ""
+    }`;
+
   const castSliderSettings = {
     infinite: false,
     slidesToShow: 6,
@@ -65,6 +64,7 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
       }
     ]
   };
+
   const relatedSliderSettings = {
     infinite: false,
     slidesToShow: 4,
@@ -87,16 +87,27 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
     ]
   };
 
+  // console.log(showData);
+
+  let test = showData.seasons.map(season => {
+    if (season.number > 0) {
+      return showData.imageData.season.find(
+        seasonImage => seasonImage.subKey === `${season.number}`
+      );
+    }
+  });
+
+  console.log("test is ", test);
+
   return (
     <Layout pageName="show-id">
       <Head>
         <title>{showData.title} | Trakr.tv</title>
         <meta
           name="description"
-          content={`${showData.title} show information.`}
+          content={`${showData.title}. ${showData.overview}`}
         />
       </Head>
-
       <div>
         <Banner
           heading={showData.title}
@@ -167,11 +178,13 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
               </div>
             </div>
           </section>
-          <section id="three" className="spotlights">
+          <section id="three" className="seasons spotlights">
             {showData.seasons.map(season =>
-              season.number > 0 ? (
+              season.number > 0 && season.first_aired ? (
                 <section key={season.number}>
-                  <Link href={`${router.query.showId}/season/${season.number}`}>
+                  <Link
+                    href={`/shows/${router.query.showId}/season/${season.number}`}
+                  >
                     <a className="image">
                       <img
                         src={`${BASE_TVDB_IMG_URL}/${
@@ -180,7 +193,7 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
                               seasonImage.subKey === `${season.number}`
                           ).fileName
                         }`}
-                        alt={`Season ${season.number}`}
+                        alt={`${season.title}`}
                       />
                     </a>
                   </Link>
@@ -188,17 +201,17 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
                     <div className="inner">
                       <div className="major">
                         <h3>
-                          Season {season.number} (
-                          {moment(season.first_aired).year()})
+                          {season.title} ({moment(season.first_aired).year()})
                         </h3>
                       </div>
                       <p>Episodes: {season.aired_episodes}</p>
+                      <p>{season.overview}</p>
                       <ul className="actions">
                         <li>
                           <Link
-                            href={`${router.query.showId}/season/${season.number}`}
+                            href={`/shows/${router.query.showId}/season/${season.number}`}
                           >
-                            <a className="button">Learn more</a>
+                            <a className="button">Episodes</a>
                           </Link>
                         </li>
                       </ul>
@@ -215,13 +228,15 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
               <header className="major">
                 <h2>Related Shows</h2>
               </header>
-              <Slider {...relatedSliderSettings}>
-                {relatedShowsData.map(show => (
-                  <div className="related-show-slide">
-                    <ShowCard key={show.ids.trakt} show={show} />
-                  </div>
-                ))}
-              </Slider>
+              {relatedShowsData && (
+                <Slider {...relatedSliderSettings}>
+                  {relatedShowsData.map(show => (
+                    <div key={show.ids.trakt} className="related-show-slide">
+                      <ShowCard key={show.ids.trakt} show={show} />
+                    </div>
+                  ))}
+                </Slider>
+              )}
               <div className="show-card-container"></div>
             </div>
           </section>
@@ -232,16 +247,12 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
 };
 
 ShowPage.getInitialProps = async function({ query }) {
-  const [showData, relatedShowsData] = await Promise.all([
-    await fetcher(`${BASE_API_URL}/api/show-info?id=${query.showId}`),
-    await fetcher(
-      `${BASE_API_URL}/api/related-shows?id=${query.showId}&limit=8`
-    )
+  const [showData] = await Promise.all([
+    await fetcher(`${BASE_API_URL}/api/show-info?id=${query.showId}`)
   ]);
 
   return {
-    initialShowData: showData,
-    initialRelatedShowsData: relatedShowsData
+    initialShowData: showData
   };
 };
 

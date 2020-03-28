@@ -2,15 +2,23 @@ import traktService from "services/trakt";
 import tvdbService from "services/tvdb";
 
 export default async (req, res) => {
+  const { id: showId, seasonNumber } = req.query;
+
   // ----------------------------
   //
   // TRAKT API
   //
   // ----------------------------
-  const [showInfo, seasonInfo] = await Promise.all([
-    await traktService.getShowInfo(req.query.id),
-    await traktService.getShowSeasons(req.query.id)
+  const [showInfo, episodeInfo, allSeasonsInfo] = await Promise.all([
+    await traktService.getShowInfo(showId, "full"),
+    await traktService.getShowSeason(showId, seasonNumber, "full"),
+    await traktService.getShowAllSeasons(showId, seasonNumber)
   ]);
+
+  // Only send info for the requested season
+  const seasonInfo = allSeasonsInfo.find(
+    season => season.number === parseInt(seasonNumber)
+  );
 
   // ----------------------------
   //
@@ -19,27 +27,24 @@ export default async (req, res) => {
   // ----------------------------
   const traktShowId = showInfo.ids.tvdb;
 
-  const [castInfo, posters, fanart, seriesArt, seasonArt] = await Promise.all([
-    await tvdbService.getShowCast(traktShowId),
-    await tvdbService.getShowImage(traktShowId, "poster"),
-    await tvdbService.getShowImage(traktShowId, "fanart"),
-    await tvdbService.getShowImage(traktShowId, "series"),
-    await tvdbService.getShowImage(traktShowId, "season")
+  const [seasonEpisodes] = await Promise.all([
+    await tvdbService.getShowEpisodes(traktShowId, seasonNumber)
   ]);
 
-  const imageData = {
-    posters,
-    fanart,
-    seriesArt,
-    seasonArt
+  const SortedEpisodes = seasonEpisodes.data.sort(
+    (a, b) => a.airedEpisodeNumber - b.airedEpisodeNumber
+  );
+
+  const seasonEpisodesArt = SortedEpisodes.map(episode => episode.filename);
+
+  const fullSeasonInfo = {
+    ...seasonInfo,
+    episodes: [...episodeInfo],
+    imageData: {
+      episodes: [...seasonEpisodesArt]
+    },
+    showInfo: { ...showInfo }
   };
 
-  const showWithImage = {
-    ...showInfo,
-    cast: [...castInfo],
-    seasons: [...seasonInfo],
-    imageData
-  };
-
-  res.status(200).json(showWithImage);
+  res.status(200).json(fullSeasonInfo);
 };

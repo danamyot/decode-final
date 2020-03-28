@@ -12,19 +12,36 @@ const instance = axios.create({
   }
 });
 
-const getShowSeasons = showId => {
+const getRelatedShows = (showId, limit) => {
+  return instance
+    .get(`/shows/${showId}/related?limit=${limit}`)
+    .then(response => response.data);
+};
+
+const getShowAllSeasons = showId => {
   return instance
     .get(`/shows/${showId}/seasons?extended=full`)
     .then(response => response.data);
 };
 
-const getShowInfo = showId => {
+const getShowSeason = (showId, seasonNumber, extended) => {
   return instance
-    .get(`/shows/${showId}?extended=full`)
+    .get(
+      `/shows/${showId}/seasons/${seasonNumber}${extended &&
+        `?extended=${extended}`}`
+    )
+    .then(response => response.data);
+};
+
+const getShowInfo = (showId, extended) => {
+  return instance
+    .get(`/shows/${showId}${extended && `?extended=${extended}`}`)
     .then(response => response.data);
 };
 
 export default {
-  getShowSeasons,
+  getRelatedShows,
+  getShowAllSeasons,
+  getShowSeason,
   getShowInfo
 };
