@@ -36,7 +36,9 @@ const ShowPage = ({ initialShowData, initialRelatedShowsData }) => {
       initialData: initialRelatedShowsData
     }
   );
-  const bannerSubHeader = `Aired: ${showData.year} | ${showData.network} ${
+  const bannerSubHeader = `Aired: ${showData.year} | ${showData.network} | ${
+    showData.certification
+  } ${
     showData.status !== "returning series" &&
     showData.status !== "in production"
       ? `| Status: ${showData.status}`
