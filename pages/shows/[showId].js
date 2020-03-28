@@ -227,12 +227,12 @@ const ShowPage = ({ initialShowData }) => {
               )
             )}
           </section>
-          <section id="four" className="related-shows">
-            <div className="inner">
-              <header className="major">
-                <h2>Related Shows</h2>
-              </header>
-              {relatedShowsData && (
+          {relatedShowsData && (
+            <section id="four" className="related-shows">
+              <div className="inner">
+                <header className="major">
+                  <h2>Related Shows</h2>
+                </header>
                 <Slider {...relatedSliderSettings}>
                   {relatedShowsData.map(show => (
                     <div key={show.ids.trakt} className="related-show-slide">
@@ -240,10 +240,11 @@ const ShowPage = ({ initialShowData }) => {
                     </div>
                   ))}
                 </Slider>
-              )}
-              <div className="show-card-container"></div>
-            </div>
-          </section>
+
+                <div className="show-card-container"></div>
+              </div>
+            </section>
+          )}
         </div>
       </div>
     </Layout>
