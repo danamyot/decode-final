@@ -87,8 +87,6 @@ const ShowPage = ({ initialShowData }) => {
     ]
   };
 
-  // console.log(showData);
-
   let test = showData.seasons.map(season => {
     if (season.number > 0) {
       return showData.imageData.season.find(
@@ -96,8 +94,6 @@ const ShowPage = ({ initialShowData }) => {
       );
     }
   });
-
-  console.log("test is ", test);
 
   return (
     <Layout pageName="show-id">
