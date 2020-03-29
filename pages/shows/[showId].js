@@ -10,7 +10,7 @@ import Banner from "components/Banner";
 import ShowCard from "components/ShowCard";
 import MissingImage from "components/MissingImage";
 import fetcher from "services/fetcher";
-import { arrayCapitalize } from "utils/helpers";
+import { arrayCapitalize, generateDescription } from "utils/helpers";
 
 import ProfileSVG from "public/images/profile.svg";
 
@@ -87,6 +87,14 @@ const ShowPage = ({ initialShowData }) => {
         }
       }
     ]
+  };
+
+  const findSeasonImage = (season, imageData) => {
+    return (
+      imageData &&
+      imageData.find(seasonImage => seasonImage.subKey === `${season.number}`)
+        .fileName
+    );
   };
 
   return (
@@ -178,11 +186,10 @@ const ShowPage = ({ initialShowData }) => {
             {showData.seasons
               .filter(season => season.number > 0 && season.first_aired)
               .map(season => {
-                const seasonImage =
-                  showData.imageData.season &&
-                  showData.imageData.season.find(
-                    seasonImage => seasonImage.subKey === `${season.number}`
-                  ).fileName;
+                const seasonImage = findSeasonImage(
+                  season,
+                  showData.imageData.season
+                );
 
                 return (
                   <section key={season.number}>
@@ -210,7 +217,10 @@ const ShowPage = ({ initialShowData }) => {
                           </h3>
                         </div>
                         <p>Episodes: {season.aired_episodes}</p>
-                        <p>{season.overview}</p>
+                        {generateDescription(
+                          season.overview,
+                          `/shows/${router.query.showId}/season/${season.number}`
+                        )}
                         <ul className="actions">
                           <li>
                             <Link
