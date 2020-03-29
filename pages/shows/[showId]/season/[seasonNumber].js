@@ -11,8 +11,7 @@ import ShowCard from "components/ShowCard";
 import fetcher from "services/fetcher";
 import { arrayCapitalize } from "utils/helpers";
 
-const BASE_API_URL = "http://localhost:3000";
-const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
+import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
 const ShowPage = ({ initialData }) => {
   const router = useRouter();

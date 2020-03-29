@@ -8,6 +8,8 @@
 - [ ] Add Next/Last episode for show info page
 - [x] Hide related shows if none found
 - [ ] Loaders for secondary data (related shows) and nicer looking empty results handling instead of hiding the entire section.
+- [ ] Limit the length of the season descriptions in show view. Read more link is to season page.
+- [ ] Refactor index.js
 
 ## Questions
 

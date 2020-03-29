@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
+import { BASE_TVDB_IMG_URL } from "config/dev.config.json";
 
 const ShowCard = ({ show }) => (
   <Link href="/shows/[showId]" as={`/shows/${show.ids.slug}`}>

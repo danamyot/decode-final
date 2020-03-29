@@ -8,13 +8,13 @@ import Slider from "react-slick";
 import Layout from "components/Layout";
 import Banner from "components/Banner";
 import ShowCard from "components/ShowCard";
+import MissingImage from "components/MissingImage";
 import fetcher from "services/fetcher";
 import { arrayCapitalize } from "utils/helpers";
 
 import ProfileSVG from "public/images/profile.svg";
 
-const BASE_API_URL = "http://localhost:3000";
-const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
+import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
 const ShowPage = ({ initialShowData }) => {
   const router = useRouter();
@@ -88,14 +88,6 @@ const ShowPage = ({ initialShowData }) => {
       }
     ]
   };
-
-  let test = showData.seasons.map(season => {
-    if (season.number > 0) {
-      return showData.imageData.season.find(
-        seasonImage => seasonImage.subKey === `${season.number}`
-      );
-    }
-  });
 
   return (
     <Layout pageName="show-id">
@@ -183,49 +175,56 @@ const ShowPage = ({ initialShowData }) => {
             </div>
           </section>
           <section id="three" className="seasons spotlights">
-            {showData.seasons.map(season =>
-              season.number > 0 && season.first_aired ? (
-                <section key={season.number}>
-                  <Link
-                    href={`/shows/${router.query.showId}/season/${season.number}`}
-                  >
-                    <a className="image">
-                      <img
-                        src={`${BASE_TVDB_IMG_URL}/${
-                          showData.imageData.season.find(
-                            seasonImage =>
-                              seasonImage.subKey === `${season.number}`
-                          ).fileName
-                        }`}
-                        alt={`${season.title}`}
-                      />
-                    </a>
-                  </Link>
-                  <div className="content">
-                    <div className="inner">
-                      <div className="major">
-                        <h3>
-                          {season.title} ({moment(season.first_aired).year()})
-                        </h3>
+            {showData.seasons
+              .filter(season => season.number > 0 && season.first_aired)
+              .map(season => {
+                const seasonImage =
+                  showData.imageData.season &&
+                  showData.imageData.season.find(
+                    seasonImage => seasonImage.subKey === `${season.number}`
+                  ).fileName;
+
+                return (
+                  <section key={season.number}>
+                    <Link
+                      href={`/shows/${router.query.showId}/season/${season.number}`}
+                    >
+                      <a className="image">
+                        {seasonImage ? (
+                          <img
+                            src={`${BASE_TVDB_IMG_URL}/${seasonImage}`}
+                            alt={`${showData.title} ${season.title} image`}
+                          />
+                        ) : (
+                          <MissingImage
+                            text={`${showData.title} ${season.title} Image`}
+                          />
+                        )}
+                      </a>
+                    </Link>
+                    <div className="content">
+                      <div className="inner">
+                        <div className="major">
+                          <h3>
+                            {season.title} ({moment(season.first_aired).year()})
+                          </h3>
+                        </div>
+                        <p>Episodes: {season.aired_episodes}</p>
+                        <p>{season.overview}</p>
+                        <ul className="actions">
+                          <li>
+                            <Link
+                              href={`/shows/${router.query.showId}/season/${season.number}`}
+                            >
+                              <a className="button">Episodes</a>
+                            </Link>
+                          </li>
+                        </ul>
                       </div>
-                      <p>Episodes: {season.aired_episodes}</p>
-                      <p>{season.overview}</p>
-                      <ul className="actions">
-                        <li>
-                          <Link
-                            href={`/shows/${router.query.showId}/season/${season.number}`}
-                          >
-                            <a className="button">Episodes</a>
-                          </Link>
-                        </li>
-                      </ul>
                     </div>
-                  </div>
-                </section>
-              ) : (
-                undefined
-              )
-            )}
+                  </section>
+                );
+              })}
           </section>
           {relatedShowsData && (
             <section id="four" className="related-shows">

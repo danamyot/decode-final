@@ -4,7 +4,7 @@ import { TRAKT_CLIENT_ID } from "config/dev.config.json";
 
 const instance = axios.create({
   baseURL: "https://api.trakt.tv",
-  timeout: 1000,
+  timeout: 2000,
   headers: {
     "Content-Type": "application/json",
     "trakt-api-version": "2",
@@ -13,15 +13,26 @@ const instance = axios.create({
 });
 
 const getRelatedShows = (showId, limit) => {
-  return instance
-    .get(`/shows/${showId}/related?limit=${limit}`)
-    .then(response => response.data);
+  return instance.get(`/shows/${showId}/related?limit=${limit}`).then(
+    response => response.data,
+    error => console.log(error)
+  );
 };
 
 const getShowAllSeasons = showId => {
+  return instance.get(`/shows/${showId}/seasons?extended=full`).then(
+    response => response.data,
+    error => console.log(error)
+  );
+};
+
+const getShowInfo = (showId, extended) => {
   return instance
-    .get(`/shows/${showId}/seasons?extended=full`)
-    .then(response => response.data);
+    .get(`/shows/${showId}${extended && `?extended=${extended}`}`)
+    .then(
+      response => response.data,
+      error => console.log(error)
+    );
 };
 
 const getShowSeason = (showId, seasonNumber, extended) => {
@@ -30,13 +41,10 @@ const getShowSeason = (showId, seasonNumber, extended) => {
       `/shows/${showId}/seasons/${seasonNumber}${extended &&
         `?extended=${extended}`}`
     )
-    .then(response => response.data);
-};
-
-const getShowInfo = (showId, extended) => {
-  return instance
-    .get(`/shows/${showId}${extended && `?extended=${extended}`}`)
-    .then(response => response.data);
+    .then(
+      response => response.data,
+      error => console.log(error)
+    );
 };
 
 export default {
