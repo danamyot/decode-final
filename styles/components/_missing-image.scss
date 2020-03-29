@@ -1,0 +1,17 @@
+.missing-image-placeholder {
+  display: flex;
+  padding: 2em;
+  flex-direction: column;
+  align-items: center;
+  border: 0.5rem solid desaturate(lighten(_palette(bg), 15), 15);
+  color: desaturate(lighten(_palette(bg), 15), 15);
+
+  svg {
+    width: 50%;
+    max-width: 250px;
+
+    path {
+      fill: desaturate(lighten(_palette(bg), 15), 15);
+    }
+  }
+}

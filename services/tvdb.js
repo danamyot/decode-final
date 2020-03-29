@@ -7,7 +7,7 @@ let tvdbToken, tvdbTokenExp;
 
 const instance = axios.create({
   baseURL: "https://api.thetvdb.com",
-  timeout: 1000,
+  timeout: 2000,
   headers: {
     "Accept-Language": "en"
   }
@@ -35,30 +35,36 @@ instance.interceptors.request.use(
   }
 );
 
-const getToken = () => {
-  return instance.post(`/login`, TVDB_AUTH).then(response => {
-    return response.data.token;
-  });
-};
-
 const getShowCast = showId => {
-  return instance.get(`/series/${showId}/actors`).then(response => {
-    return response.data.data;
-  });
+  return instance.get(`/series/${showId}/actors`).then(
+    response => response.data.data,
+    error => console.log(error)
+  );
 };
 
 const getShowEpisodes = (showId, seasonNumber) => {
   return instance
     .get(`/series/${showId}/episodes/query?airedSeason=${seasonNumber}`)
-    .then(response => {
-      return response.data;
-    });
+    .then(
+      response => response.data,
+      error => console.log(error)
+    );
 };
 
 const getShowImage = (showId, imageType) => {
   return instance
     .get(`/series/${showId}/images/query?keyType=${imageType}`)
-    .then(response => response.data.data);
+    .then(
+      response => response.data.data,
+      error => console.log(error)
+    );
+};
+
+const getToken = () => {
+  return instance.post(`/login`, TVDB_AUTH).then(
+    response => response.data.token,
+    error => console.log(error)
+  );
 };
 
 export default {

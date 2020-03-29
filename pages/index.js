@@ -6,7 +6,8 @@ import Layout from "components/Layout";
 import BannerSearch from "components/BannerSearch";
 import ShowCard from "components/ShowCard";
 
-const API_URL = "http://localhost:3000/api/popular-shows?limit=12";
+import { BASE_API_URL } from "config/dev.config.json";
+const API_URL = `${BASE_API_URL}/api/popular-shows?limit=12`;
 
 async function fetcher(...args) {
   const res = await fetch(...args);

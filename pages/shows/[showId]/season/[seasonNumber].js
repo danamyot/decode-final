@@ -3,16 +3,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import moment from "moment";
-import Slider from "react-slick";
 
 import Layout from "components/Layout";
 import Banner from "components/Banner";
-import ShowCard from "components/ShowCard";
 import fetcher from "services/fetcher";
-import { arrayCapitalize } from "utils/helpers";
 
-const BASE_API_URL = "http://localhost:3000";
-const BASE_TVDB_IMG_URL = "https://artworks.thetvdb.com/banners";
+import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
 const ShowPage = ({ initialData }) => {
   const router = useRouter();
@@ -144,23 +140,6 @@ const ShowPage = ({ initialData }) => {
               </section>
             ))}
           </section>
-          {/* <section id="four" className="related-shows">
-            <div className="inner">
-              <header className="major">
-                <h2>Related Shows</h2>
-              </header>
-              {relatedShowsData && (
-                <Slider {...relatedSliderSettings}>
-                  {relatedShowsData.map(show => (
-                    <div className="related-show-slide">
-                      <ShowCard key={show.ids.trakt} show={show} />
-                    </div>
-                  ))}
-                </Slider>
-              )}
-              <div className="show-card-container"></div>
-            </div>
-          </section> */}
         </div>
       </div>
     </Layout>
