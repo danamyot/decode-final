@@ -2,7 +2,7 @@ import traktService from "services/trakt";
 import tvdbService from "services/tvdb";
 
 export default async (req, res) => {
-  const { id: showId, seasonNumber } = req.query;
+  const { id: showId, season: seasonNumber } = req.query;
 
   // ----------------------------
   //
@@ -10,7 +10,7 @@ export default async (req, res) => {
   //
   // ----------------------------
   const [showInfo, episodeInfo, allSeasonsInfo] = await Promise.all([
-    await traktService.getShowInfo(showId, "full"),
+    await traktService.getShowInfo(showId),
     await traktService.getShowSeason(showId, seasonNumber, "full"),
     await traktService.getShowAllSeasons(showId, seasonNumber)
   ]);
@@ -25,10 +25,8 @@ export default async (req, res) => {
   // TVDB API
   //
   // ----------------------------
-  const traktShowId = showInfo.ids.tvdb;
-
   const [seasonEpisodes] = await Promise.all([
-    await tvdbService.getShowEpisodes(traktShowId, seasonNumber)
+    await tvdbService.getShowEpisodes(showInfo.ids.tvdb, seasonNumber)
   ]);
 
   const SortedEpisodes = seasonEpisodes.data.sort(

@@ -18,6 +18,7 @@ import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
 const ShowPage = ({ initialShowData }) => {
   const router = useRouter();
+  const { showId } = router.query;
 
   const { data: showData } = useSWR(
     `${BASE_API_URL}/api/show-info?id=${router.query.showId}`,
@@ -132,16 +133,16 @@ const ShowPage = ({ initialShowData }) => {
                 {showData.trailer && (
                   <>
                     <h4>Trailer</h4>
-                    <iframe
-                      width="560"
-                      height="315"
-                      src={`https://www.youtube.com/embed/${
-                        showData.trailer.split("?v=")[1]
-                      }`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
+                    <div className="trailer-container">
+                      <iframe
+                        src={`https://www.youtube.com/embed/${
+                          showData.trailer.split("?v=")[1]
+                        }`}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    </div>
                   </>
                 )}
               </div>

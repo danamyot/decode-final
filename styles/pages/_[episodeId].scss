@@ -1,0 +1,23 @@
+.page-episode-id {
+  .episode-info {
+    & > .inner {
+      display: flex;
+
+      @include breakpoint(medium) {
+        flex-direction: column;
+      }
+    }
+    .episode-image {
+      min-width: 400px;
+      margin-right: 1rem;
+
+      @include breakpoint(medium) {
+        min-width: 0;
+        margin-right: 0;
+      }
+      img {
+        width: 100%;
+      }
+    }
+  }
+}

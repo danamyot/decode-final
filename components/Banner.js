@@ -1,15 +1,28 @@
-const Banner = props => (
+import Link from "next/link";
+
+const Banner = ({
+  preHeading,
+  preHeadingLink,
+  heading,
+  subHeading,
+  background
+}) => (
   <section
     id="banner"
     className="style2"
-    style={props.background && { backgroundImage: `url(${props.background})` }}
+    style={background && { backgroundImage: `url(${background})` }}
   >
     <div className="inner">
+      {preHeading && (
+        <Link href={preHeadingLink}>
+          <a className="pre-header h3">{preHeading}</a>
+        </Link>
+      )}
       <header className="major">
-        <h1>{props.heading}</h1>
+        <h1>{heading}</h1>
       </header>
       <div className="content">
-        <p>{props.subHeading}</p>
+        <p>{subHeading}</p>
       </div>
     </div>
   </section>
