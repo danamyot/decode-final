@@ -48,9 +48,17 @@ const getShowSeason = (showId, seasonNumber, extended) => {
     );
 };
 
+const getTopShows = (category, limit) => {
+  return instance.get(`/shows/${category}?limit=${limit}`).then(
+    response => response.data,
+    error => console.log(error)
+  );
+};
+
 export default {
   getRelatedShows,
   getShowAllSeasons,
   getShowSeason,
-  getShowInfo
+  getShowInfo,
+  getTopShows
 };

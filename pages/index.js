@@ -1,21 +1,20 @@
-import Link from "next/link";
-import fetch from "isomorphic-unfetch";
 import useSWR from "swr";
 
 import Layout from "components/Layout";
 import BannerSearch from "components/BannerSearch";
 import ShowCard from "components/ShowCard";
+import fetcher from "services/fetcher";
 
 import { BASE_API_URL } from "config/dev.config.json";
-const API_URL = `${BASE_API_URL}/api/popular-shows?limit=12`;
-
-async function fetcher(...args) {
-  const res = await fetch(...args);
-  return res.json();
-}
 
 const Index = ({ initialData }) => {
-  const { data } = useSWR(API_URL, fetcher, { initialData });
+  const {
+    data
+  } = useSWR(
+    `${BASE_API_URL}/api/top-shows?category=popular&limit=12`,
+    fetcher,
+    { initialData }
+  );
 
   return (
     <Layout pageName="index">
@@ -44,7 +43,9 @@ const Index = ({ initialData }) => {
 };
 
 Index.getInitialProps = async function() {
-  const data = await fetcher(API_URL);
+  const data = await fetcher(
+    `${BASE_API_URL}/api/top-shows?category=popular&limit=12`
+  );
 
   return { initialData: data };
 };
