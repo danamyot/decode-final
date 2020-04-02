@@ -37,7 +37,5 @@ export default async (req, res) => {
     return newShow;
   });
 
-  console.log(showsWithImage);
-
   res.status(200).json(showsWithImage);
 };
