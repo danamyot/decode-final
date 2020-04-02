@@ -61,13 +61,56 @@ const ShowPage = ({ initialData }) => {
                   alt={`${episodeData.showInfo.title} Season ${episodeData.season} Episode ${episodeData.number}`}
                 />
               </div>
-              <div>
+              <div className="episode-info">
                 <header className="major">
                   <h2>Overview</h2>
                 </header>
+                <p>Runtime: {episodeData.runtime}m</p>
+                <p>Directed by: {episodeData.directors.join(", ")}</p>
+                <p>Written by: {episodeData.writers.join(", ")}</p>
+                {episodeData.guestStars.length > 0 && (
+                  <p>Guest stars: {episodeData.guestStars.join(", ")}</p>
+                )}
+              </div>
+              <div className="episode-description">
+                <h5>Description</h5>
                 <p>{episodeData.overview}</p>
               </div>
             </div>
+          </section>
+          <section id="two" className="previous-next-episodes">
+            {episodeData.previousEpisode.number && (
+              <Link
+                href={`/shows/${showId}/season/${episodeData.previousEpisode.season}/episode/${episodeData.previousEpisode.number}`}
+              >
+                <a className="previous-episode">
+                  <img
+                    src={`${BASE_TVDB_IMG_URL}/${episodeData.previousEpisode.filename}`}
+                    alt={`Season ${episodeData.previousEpisode.season} Episode ${episodeData.previousEpisode.number}`}
+                  />
+                  <p className="episode-number">{`Season ${episodeData.previousEpisode.season} Episode ${episodeData.previousEpisode.number}`}</p>
+                  <p className="episode-name">
+                    {episodeData.previousEpisode.title}
+                  </p>
+                </a>
+              </Link>
+            )}
+            {episodeData.nextEpisode.number && (
+              <Link
+                href={`/shows/${showId}/season/${episodeData.nextEpisode.season}/episode/${episodeData.nextEpisode.number}`}
+              >
+                <a className="next-episode">
+                  <img
+                    src={`${BASE_TVDB_IMG_URL}/${episodeData.nextEpisode.filename}`}
+                    alt={`Season ${episodeData.nextEpisode.season} Episode ${episodeData.nextEpisode.number}`}
+                  />
+                  <p className="episode-number">{`Season ${episodeData.nextEpisode.season} Episode ${episodeData.nextEpisode.number}`}</p>
+                  <p className="episode-name">
+                    {episodeData.nextEpisode.title}
+                  </p>
+                </a>
+              </Link>
+            )}
           </section>
         </div>
       </div>

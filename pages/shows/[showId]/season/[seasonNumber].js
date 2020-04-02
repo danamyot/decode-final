@@ -7,6 +7,7 @@ import moment from "moment";
 import Layout from "components/Layout";
 import Banner from "components/Banner";
 import fetcher from "services/fetcher";
+import { generateDescription } from "utils/helpers";
 
 import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
@@ -132,7 +133,12 @@ const ShowPage = ({ initialData }) => {
                         .utc()
                         .format("YYYY-MM-DD")}
                     </p>
-                    <p>{episode.overview}</p>
+                    <p>
+                      {generateDescription(
+                        episode.overview,
+                        `/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`
+                      )}
+                    </p>
                     <ul className="actions">
                       <li>
                         <Link
