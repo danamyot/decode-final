@@ -28,50 +28,6 @@ const ShowPage = ({ initialData }) => {
   const bannerSubHeader =
     seasonData.showInfo && `Aired: ${moment(seasonData.first_aired).year()}`;
 
-  const castSliderSettings = {
-    infinite: false,
-    slidesToShow: 6,
-    slidesToScroll: 3,
-    responsive: [
-      {
-        breakpoint: 980, // medium breakpoint
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4
-        }
-      },
-      {
-        breakpoint: 480, // xsmall breakpoint
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3
-        }
-      }
-    ]
-  };
-
-  const relatedSliderSettings = {
-    infinite: false,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    responsive: [
-      {
-        breakpoint: 736, // small breakpoint
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3
-        }
-      },
-      {
-        breakpoint: 480, // xsmall breakpoint
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2
-        }
-      }
-    ]
-  };
-
   return (
     <Layout pageName="season-id">
       <Head>
