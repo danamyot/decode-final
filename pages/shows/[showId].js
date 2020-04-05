@@ -5,6 +5,7 @@ import useSWR from "swr";
 import moment from "moment";
 import Slider from "react-slick";
 
+import CastSlider from "components/CastSlider";
 import Layout from "components/Layout";
 import Banner from "components/Banner";
 import ShowCard from "components/ShowCard";
@@ -13,8 +14,6 @@ import YouTubePlayer from "components/YouTubePlayer";
 
 import fetcher from "services/fetcher";
 import { arrayCapitalize, generateDescription } from "utils/helpers";
-
-import ProfileSVG from "public/images/profile.svg";
 
 import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
@@ -47,28 +46,6 @@ const ShowPage = ({ initialShowData }) => {
         ? `| Status: ${showData.status}`
         : ""
     }`;
-
-  const castSliderSettings = {
-    infinite: false,
-    slidesToShow: 6,
-    slidesToScroll: 3,
-    responsive: [
-      {
-        breakpoint: 980, // medium breakpoint
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4
-        }
-      },
-      {
-        breakpoint: 480, // xsmall breakpoint
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3
-        }
-      }
-    ]
-  };
 
   const relatedSliderSettings = {
     infinite: false,
@@ -143,39 +120,9 @@ const ShowPage = ({ initialShowData }) => {
               )}
             </div>
           </section>
-          <section id="two" className="cast">
+          <section id="two" className="show-cast">
             <div className="inner">
-              <header className="major">
-                <h2>Cast</h2>
-              </header>
-              <div className="cast-container">
-                <Slider {...castSliderSettings}>
-                  {showData.cast.slice(0, 10).map((castMember, i) => (
-                    <div key={i} className="cast-member">
-                      <div className="cast-member-img-container">
-                        {castMember.image ? (
-                          <div
-                            style={{
-                              backgroundImage: `URL(${BASE_TVDB_IMG_URL}/${castMember.image})`
-                            }}
-                            className="cast-member-img"
-                          ></div>
-                        ) : (
-                          <div className="cast-member-img default-img">
-                            <ProfileSVG />
-                          </div>
-                        )}
-                      </div>
-                      <p className="cast-member-role" title={castMember.role}>
-                        {castMember.role}
-                      </p>
-                      <p className="cast-member-actor" title={castMember.name}>
-                        {castMember.name}
-                      </p>
-                    </div>
-                  ))}
-                </Slider>
-              </div>
+              <CastSlider cast={showData.cast} />
             </div>
           </section>
           <section id="three" className="seasons spotlights">
