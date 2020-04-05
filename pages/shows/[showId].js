@@ -9,6 +9,8 @@ import Layout from "components/Layout";
 import Banner from "components/Banner";
 import ShowCard from "components/ShowCard";
 import MissingImage from "components/MissingImage";
+import YouTubePlayer from "components/YouTubePlayer";
+
 import fetcher from "services/fetcher";
 import { arrayCapitalize, generateDescription } from "utils/helpers";
 
@@ -132,16 +134,11 @@ const ShowPage = ({ initialShowData }) => {
               {showData.trailer && (
                 <div className="show-trailer">
                   <h4>Trailer</h4>
-                  <div className="trailer-container">
-                    <iframe
-                      src={`https://www.youtube.com/embed/${
-                        showData.trailer.split("?v=")[1]
-                      }`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
+                  <YouTubePlayer
+                    videoURL={`https://www.youtube.com/embed/${
+                      showData.trailer.split("?v=")[1]
+                    }`}
+                  />
                 </div>
               )}
             </div>
