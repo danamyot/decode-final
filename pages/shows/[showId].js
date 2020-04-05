@@ -3,13 +3,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import moment from "moment";
-import Slider from "react-slick";
 
+import Banner from "components/Banner";
 import CastSlider from "components/CastSlider";
 import Layout from "components/Layout";
-import Banner from "components/Banner";
-import ShowCard from "components/ShowCard";
 import MissingImage from "components/MissingImage";
+import RelatedShows from "components/RelatedShows";
 import YouTubePlayer from "components/YouTubePlayer";
 
 import fetcher from "services/fetcher";
@@ -46,28 +45,6 @@ const ShowPage = ({ initialShowData }) => {
         ? `| Status: ${showData.status}`
         : ""
     }`;
-
-  const relatedSliderSettings = {
-    infinite: false,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    responsive: [
-      {
-        breakpoint: 736, // small breakpoint
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3
-        }
-      },
-      {
-        breakpoint: 480, // xsmall breakpoint
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2
-        }
-      }
-    ]
-  };
 
   const findSeasonImage = (season, imageData) => {
     return (
@@ -178,22 +155,7 @@ const ShowPage = ({ initialShowData }) => {
               })}
           </section>
           {relatedShowsData && (
-            <section id="four" className="related-shows">
-              <div className="inner">
-                <header className="major">
-                  <h2>Related Shows</h2>
-                </header>
-                <Slider {...relatedSliderSettings}>
-                  {relatedShowsData.map(show => (
-                    <div key={show.ids.trakt} className="related-show-slide">
-                      <ShowCard key={show.ids.trakt} show={show} />
-                    </div>
-                  ))}
-                </Slider>
-
-                <div className="show-card-container"></div>
-              </div>
-            </section>
+            <RelatedShows relatedShowsData={relatedShowsData} />
           )}
         </div>
       </div>

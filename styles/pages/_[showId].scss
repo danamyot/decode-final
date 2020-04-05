@@ -10,6 +10,7 @@
         height: 3.5rem;
         box-shadow: none;
       }
+
       &.slick-prev {
         right: 3.5rem;
 
@@ -17,10 +18,12 @@
           content: "\276E";
         }
       }
+
       &.slick-next::before {
         content: "\276F";
       }
     }
+
     .slick-list {
       padding-top: 0.5rem;
     }
@@ -48,14 +51,6 @@
       &:nth-child(2n) {
         flex-direction: row;
       }
-    }
-  }
-  .related-shows {
-    .related-show-slide {
-      padding: 0 0.5rem;
-    }
-    .show-card::before {
-      box-shadow: none;
     }
   }
 }
