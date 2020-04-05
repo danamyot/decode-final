@@ -24,4 +24,4 @@
 ### Next Work
 
 - [x] Axios
-- [ ] Make smaller components for pages
+- [x] Make smaller components for pages

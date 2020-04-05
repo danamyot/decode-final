@@ -1,0 +1,9 @@
+.related-shows {
+  .related-show-slide {
+    padding: 0 0.5rem;
+  }
+
+  .show-card::before {
+    box-shadow: none;
+  }
+}

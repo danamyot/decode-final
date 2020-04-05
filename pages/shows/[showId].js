@@ -3,16 +3,16 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import moment from "moment";
-import Slider from "react-slick";
 
-import Layout from "components/Layout";
 import Banner from "components/Banner";
-import ShowCard from "components/ShowCard";
+import CastSlider from "components/CastSlider";
+import Layout from "components/Layout";
 import MissingImage from "components/MissingImage";
+import RelatedShows from "components/RelatedShows";
+import YouTubePlayer from "components/YouTubePlayer";
+
 import fetcher from "services/fetcher";
 import { arrayCapitalize, generateDescription } from "utils/helpers";
-
-import ProfileSVG from "public/images/profile.svg";
 
 import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
@@ -45,50 +45,6 @@ const ShowPage = ({ initialShowData }) => {
         ? `| Status: ${showData.status}`
         : ""
     }`;
-
-  const castSliderSettings = {
-    infinite: false,
-    slidesToShow: 6,
-    slidesToScroll: 3,
-    responsive: [
-      {
-        breakpoint: 980, // medium breakpoint
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4
-        }
-      },
-      {
-        breakpoint: 480, // xsmall breakpoint
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3
-        }
-      }
-    ]
-  };
-
-  const relatedSliderSettings = {
-    infinite: false,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    responsive: [
-      {
-        breakpoint: 736, // small breakpoint
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3
-        }
-      },
-      {
-        breakpoint: 480, // xsmall breakpoint
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2
-        }
-      }
-    ]
-  };
 
   const findSeasonImage = (season, imageData) => {
     return (
@@ -132,53 +88,18 @@ const ShowPage = ({ initialShowData }) => {
               {showData.trailer && (
                 <div className="show-trailer">
                   <h4>Trailer</h4>
-                  <div className="trailer-container">
-                    <iframe
-                      src={`https://www.youtube.com/embed/${
-                        showData.trailer.split("?v=")[1]
-                      }`}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  </div>
+                  <YouTubePlayer
+                    videoURL={`https://www.youtube.com/embed/${
+                      showData.trailer.split("?v=")[1]
+                    }`}
+                  />
                 </div>
               )}
             </div>
           </section>
-          <section id="two" className="cast">
+          <section id="two" className="show-cast">
             <div className="inner">
-              <header className="major">
-                <h2>Cast</h2>
-              </header>
-              <div className="cast-container">
-                <Slider {...castSliderSettings}>
-                  {showData.cast.slice(0, 10).map((castMember, i) => (
-                    <div key={i} className="cast-member">
-                      <div className="cast-member-img-container">
-                        {castMember.image ? (
-                          <div
-                            style={{
-                              backgroundImage: `URL(${BASE_TVDB_IMG_URL}/${castMember.image})`
-                            }}
-                            className="cast-member-img"
-                          ></div>
-                        ) : (
-                          <div className="cast-member-img default-img">
-                            <ProfileSVG />
-                          </div>
-                        )}
-                      </div>
-                      <p className="cast-member-role" title={castMember.role}>
-                        {castMember.role}
-                      </p>
-                      <p className="cast-member-actor" title={castMember.name}>
-                        {castMember.name}
-                      </p>
-                    </div>
-                  ))}
-                </Slider>
-              </div>
+              <CastSlider cast={showData.cast} />
             </div>
           </section>
           <section id="three" className="seasons spotlights">
@@ -234,22 +155,7 @@ const ShowPage = ({ initialShowData }) => {
               })}
           </section>
           {relatedShowsData && (
-            <section id="four" className="related-shows">
-              <div className="inner">
-                <header className="major">
-                  <h2>Related Shows</h2>
-                </header>
-                <Slider {...relatedSliderSettings}>
-                  {relatedShowsData.map(show => (
-                    <div key={show.ids.trakt} className="related-show-slide">
-                      <ShowCard key={show.ids.trakt} show={show} />
-                    </div>
-                  ))}
-                </Slider>
-
-                <div className="show-card-container"></div>
-              </div>
-            </section>
+            <RelatedShows relatedShowsData={relatedShowsData} />
           )}
         </div>
       </div>
