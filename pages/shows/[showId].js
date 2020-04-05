@@ -18,9 +18,10 @@ import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
 const ShowPage = ({ initialShowData }) => {
   const router = useRouter();
+  const { showId } = router.query;
 
   const { data: showData } = useSWR(
-    `${BASE_API_URL}/api/show-info?id=${router.query.showId}`,
+    `${BASE_API_URL}/api/show-info?id=${showId}`,
     fetcher,
     {
       initialData: initialShowData
@@ -30,7 +31,7 @@ const ShowPage = ({ initialShowData }) => {
   process.browser && console.log(showData);
 
   const { data: relatedShowsData } = useSWR(
-    `${BASE_API_URL}/api/related-shows?id=${router.query.showId}&limit=8`,
+    `${BASE_API_URL}/api/related-shows?id=${showId}&limit=8`,
     fetcher
   );
 
@@ -128,13 +129,11 @@ const ShowPage = ({ initialShowData }) => {
                   <a href={showData.homepage}>Homepage</a>
                 </p>
               </div>
-              <div className="show-trailer">
-                {showData.trailer && (
-                  <>
-                    <h4>Trailer</h4>
+              {showData.trailer && (
+                <div className="show-trailer">
+                  <h4>Trailer</h4>
+                  <div className="trailer-container">
                     <iframe
-                      width="560"
-                      height="315"
                       src={`https://www.youtube.com/embed/${
                         showData.trailer.split("?v=")[1]
                       }`}
@@ -142,9 +141,9 @@ const ShowPage = ({ initialShowData }) => {
                       allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen
                     ></iframe>
-                  </>
-                )}
-              </div>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
           <section id="two" className="cast">
@@ -193,9 +192,7 @@ const ShowPage = ({ initialShowData }) => {
 
                 return (
                   <section key={season.number}>
-                    <Link
-                      href={`/shows/${router.query.showId}/season/${season.number}`}
-                    >
+                    <Link href={`/shows/${showId}/season/${season.number}`}>
                       <a className="image">
                         {seasonImage ? (
                           <img
@@ -219,12 +216,12 @@ const ShowPage = ({ initialShowData }) => {
                         <p>Episodes: {season.aired_episodes}</p>
                         {generateDescription(
                           season.overview,
-                          `/shows/${router.query.showId}/season/${season.number}`
+                          `/shows/${showId}/season/${season.number}`
                         )}
                         <ul className="actions">
                           <li>
                             <Link
-                              href={`/shows/${router.query.showId}/season/${season.number}`}
+                              href={`/shows/${showId}/season/${season.number}`}
                             >
                               <a className="button">Episodes</a>
                             </Link>

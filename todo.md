@@ -1,11 +1,11 @@
 ## Do this
 
 - [x] axios for auth handling
-- [ ] Better handling of external (TVDB/TRAKT) API errors
+- [ ] Better frontend handling of external (TVDB/TRAKT) API errors
 - [x] Capitalize genres in show page (front end)
 - [ ] Episodes in a slider instead of season image in show info page - How to do this effeiciently, lots of episodes and images to load. New endpoint?
 - [ ] Implement cache for backend requests, no fetching new data from APIs when it's already available locally. Will this scale when live?
-- [ ] Add Next/Last episode for show info page
+- [x] Add Next/Last episode for show info page
 - [x] Hide related shows if none found
 - [ ] Loaders for secondary data (related shows) and nicer looking empty results handling instead of hiding the entire section.
 - [x] Limit the length of the season descriptions in show view. Read more link is to season page.

@@ -1,0 +1,116 @@
+.page-episode-id {
+  .episode-info {
+    & > .inner {
+      display: flex;
+      flex-wrap: wrap;
+
+      @include breakpoint(medium) {
+        flex-direction: column;
+        flex-wrap: nowrap;
+      }
+    }
+
+    .episode-image {
+      flex-basis: calc(50% - 3rem);
+      min-width: 400px;
+      max-width: 650px;
+      margin-right: 3rem;
+      margin-bottom: 3rem;
+
+      @include breakpoint(medium) {
+        min-width: 0;
+        width: auto;
+        max-width: none;
+        margin-right: 0;
+        margin-bottom: 0;
+      }
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .episode-info {
+      flex-basis: 50%;
+    }
+
+    .episode-description {
+      flex-basis: 100%;
+    }
+  }
+  .previous-next-episodes {
+    background-color: desaturate(lighten(_palette(bg-alt), 2), 1);
+    display: flex;
+
+    > a {
+      position: relative;
+      width: calc(45% - 1px);
+      max-width: 650px;
+      padding: 2rem;
+      border-bottom: none;
+      text-align: center;
+      @include vendor(
+        "transition",
+        ("background-color #{_duration(transition)} ease-in-out")
+      );
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.15);
+      }
+
+      &::before {
+        position: absolute;
+        top: 50%;
+        width: 5rem;
+        transform: translateY(-50%);
+        font-size: 2rem;
+      }
+    }
+
+    .previous-episode {
+      margin-left: auto;
+      padding-left: 5rem;
+      border-right: 1px solid desaturate(lighten(_palette(bg-alt), 8), 4);
+
+      &:last-child {
+        margin-right: 50%;
+      }
+
+      &::before {
+        content: "\27F5";
+        left: 0;
+      }
+    }
+
+    .next-episode {
+      margin-right: auto;
+      padding-right: 5rem;
+      border-left: 1px solid desaturate(lighten(_palette(bg-alt), 8), 4);
+
+      &:first-child {
+        margin-left: 50%;
+      }
+
+      &::before {
+        content: "\27F6";
+        right: 0;
+      }
+    }
+
+    img {
+      width: 100%;
+    }
+
+    .episode-number {
+      font-size: 0.8rem;
+    }
+
+    .episode-name {
+      font-weight: bold;
+    }
+
+    p {
+      margin: 0.25em;
+    }
+  }
+}

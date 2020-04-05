@@ -28,7 +28,7 @@ const getShowAllSeasons = showId => {
 
 const getShowInfo = (showId, extended) => {
   return instance
-    .get(`/shows/${showId}${extended && `?extended=${extended}`}`)
+    .get(`/shows/${showId}${extended ? `?extended=${extended}` : ""}`)
     .then(
       response => response.data,
       error => console.log(error)
@@ -38,8 +38,9 @@ const getShowInfo = (showId, extended) => {
 const getShowSeason = (showId, seasonNumber, extended) => {
   return instance
     .get(
-      `/shows/${showId}/seasons/${seasonNumber}${extended &&
-        `?extended=${extended}`}`
+      `/shows/${showId}/seasons/${seasonNumber}${
+        extended ? `?extended=${extended}` : ""
+      }`
     )
     .then(
       response => response.data,
@@ -47,9 +48,17 @@ const getShowSeason = (showId, seasonNumber, extended) => {
     );
 };
 
+const getTopShows = (category, limit) => {
+  return instance.get(`/shows/${category}?limit=${limit}`).then(
+    response => response.data,
+    error => console.log(error)
+  );
+};
+
 export default {
   getRelatedShows,
   getShowAllSeasons,
   getShowSeason,
-  getShowInfo
+  getShowInfo,
+  getTopShows
 };

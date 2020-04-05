@@ -7,27 +7,26 @@ import moment from "moment";
 import Layout from "components/Layout";
 import Banner from "components/Banner";
 import fetcher from "services/fetcher";
+import { generateDescription } from "utils/helpers";
 
 import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
 const ShowPage = ({ initialData }) => {
   const router = useRouter();
+  const { showId, seasonNumber } = router.query;
 
   const { data: seasonData } = useSWR(
-    `${BASE_API_URL}/api/season-info?id=${router.query.showId}&seasonNumber=${router.query.seasonNumber}`,
+    `${BASE_API_URL}/api/season-info?id=${showId}&season=${seasonNumber}`,
     fetcher,
     {
-      initialData: initialData
+      initialData
     }
   );
 
   process.browser && console.log(seasonData);
 
   const bannerSubHeader =
-    seasonData.showInfo &&
-    `Aired: ${moment(seasonData.first_aired).year()} | ${
-      seasonData.showInfo.network
-    } | ${seasonData.showInfo.certification}`;
+    seasonData.showInfo && `Aired: ${moment(seasonData.first_aired).year()}`;
 
   const castSliderSettings = {
     infinite: false,
@@ -85,10 +84,15 @@ const ShowPage = ({ initialData }) => {
         />
       </Head>
       <div>
-        <Banner heading={`${seasonData.title}`} subHeading={bannerSubHeader} />
+        <Banner
+          preHeading={seasonData.showInfo.title}
+          preHeadingLink={`/shows/${showId}`}
+          heading={`${seasonData.title}`}
+          subHeading={bannerSubHeader}
+        />
 
         <div id="main">
-          <section id="one" className="show-info">
+          <section id="one" className="season-info">
             <div className="inner">
               <div>
                 <header className="major">
@@ -103,7 +107,7 @@ const ShowPage = ({ initialData }) => {
             {seasonData.episodes.map((episode, i) => (
               <section key={episode.number}>
                 <Link
-                  href={`/shows/${router.query.showId}/season/${router.query.seasonNumber}/episode/${episode.number}`}
+                  href={`/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`}
                 >
                   <a className="image">
                     <img
@@ -116,7 +120,11 @@ const ShowPage = ({ initialData }) => {
                   <div className="inner">
                     <h4>Episode {episode.number}</h4>
                     <header className="major">
-                      <h3>{episode.title}</h3>
+                      <Link
+                        href={`/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`}
+                      >
+                        <a className="h3">{episode.title}</a>
+                      </Link>
                     </header>
                     <p>
                       Runtime: {episode.runtime}m
@@ -125,11 +133,16 @@ const ShowPage = ({ initialData }) => {
                         .utc()
                         .format("YYYY-MM-DD")}
                     </p>
-                    <p>{episode.overview}</p>
+                    <p>
+                      {generateDescription(
+                        episode.overview,
+                        `/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`
+                      )}
+                    </p>
                     <ul className="actions">
                       <li>
                         <Link
-                          href={`/shows/${router.query.showId}/season/${router.query.seasonNumber}/episode/${episode.number}`}
+                          href={`/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`}
                         >
                           <a>More</a>
                         </Link>
@@ -148,7 +161,7 @@ const ShowPage = ({ initialData }) => {
 
 ShowPage.getInitialProps = async function({ query }) {
   const data = await fetcher(
-    `${BASE_API_URL}/api/season-info?id=${query.showId}&seasonNumber=${query.seasonNumber}`
+    `${BASE_API_URL}/api/season-info?id=${query.showId}&season=${query.seasonNumber}`
   );
 
   return {
