@@ -38,7 +38,7 @@ instance.interceptors.request.use(
 const getShowCast = showId => {
   return instance.get(`/series/${showId}/actors`).then(
     response => response.data.data,
-    error => console.log(error)
+    error => error
   );
 };
 
@@ -47,7 +47,7 @@ const getShowEpisodes = (showId, seasonNumber) => {
     .get(`/series/${showId}/episodes/query?airedSeason=${seasonNumber}`)
     .then(
       response => response.data,
-      error => console.log(error)
+      error => error
     );
 };
 
@@ -56,14 +56,14 @@ const getShowImage = (showId, imageType) => {
     .get(`/series/${showId}/images/query?keyType=${imageType}`)
     .then(
       response => response.data.data,
-      error => console.log(error)
+      error => error
     );
 };
 
 const getToken = () => {
   return instance.post(`/login`, TVDB_AUTH).then(
     response => response.data.token,
-    error => console.log(error)
+    error => error
   );
 };
 

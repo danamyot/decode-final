@@ -96,11 +96,13 @@ const ShowPage = ({ initialShowData }) => {
               )}
             </div>
           </section>
-          <section id="two" className="show-cast">
-            <div className="inner">
-              <CastSlider cast={showData.cast} />
-            </div>
-          </section>
+          {showData.cast && (
+            <section id="two" className="show-cast">
+              <div className="inner">
+                <CastSlider cast={showData.cast} />
+              </div>
+            </section>
+          )}
           <section id="three" className="seasons spotlights">
             {showData.seasons
               .filter(season => season.number > 0 && season.first_aired)

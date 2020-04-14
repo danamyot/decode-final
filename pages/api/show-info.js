@@ -36,7 +36,7 @@ export default async (req, res) => {
 
   const showWithImage = {
     ...showInfo,
-    cast: [...castInfo],
+    cast: castInfo.response.status !== 404 && [...castInfo],
     seasons: [...seasonsInfo],
     imageData
   };

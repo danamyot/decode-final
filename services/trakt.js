@@ -15,14 +15,14 @@ const instance = axios.create({
 const getRelatedShows = (showId, limit) => {
   return instance.get(`/shows/${showId}/related?limit=${limit}`).then(
     response => response.data,
-    error => console.log(error)
+    error => error
   );
 };
 
 const getShowAllSeasons = showId => {
   return instance.get(`/shows/${showId}/seasons?extended=full`).then(
     response => response.data,
-    error => console.log(error)
+    error => error
   );
 };
 
@@ -31,7 +31,7 @@ const getShowInfo = (showId, extended) => {
     .get(`/shows/${showId}${extended ? `?extended=${extended}` : ""}`)
     .then(
       response => response.data,
-      error => console.log(error)
+      error => error
     );
 };
 
@@ -44,14 +44,14 @@ const getShowSeason = (showId, seasonNumber, extended) => {
     )
     .then(
       response => response.data,
-      error => console.log(error)
+      error => error
     );
 };
 
 const getTopShows = (category, limit) => {
   return instance.get(`/shows/${category}?limit=${limit}`).then(
     response => response.data,
-    error => console.log(error)
+    error => error
   );
 };
 
