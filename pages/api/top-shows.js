@@ -11,6 +11,15 @@ export default async (req, res) => {
     await traktService.getTopShows(req.query.category, req.query.limit)
   ]);
 
+  // Different data structure is returned from Trakt based on the category,
+  // so we need to normalize the data
+  const normalizedShows = shows.map(show => {
+    if (show.show) {
+      return show.show;
+    }
+    return show;
+  });
+
   // ----------------------------
   //
   // TVDB API
@@ -18,12 +27,12 @@ export default async (req, res) => {
   // ----------------------------
 
   const relatedShowImages = await Promise.all(
-    shows.map(
-      async show => await tvdbService.getShowImage(show.ids.tvdb, "poster")
-    )
+    normalizedShows.map(async show => {
+      return await tvdbService.getShowImage(show.ids.tvdb, "poster");
+    })
   );
 
-  const showsWithImage = shows.map((showInfo, i) => {
+  const showsWithImage = normalizedShows.map((showInfo, i) => {
     let newShow = {
       ...showInfo
     };

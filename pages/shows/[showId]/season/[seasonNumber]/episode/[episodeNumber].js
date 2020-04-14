@@ -4,13 +4,13 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import moment from "moment";
 
-import Layout from "components/Layout";
 import Banner from "components/Banner";
+import Layout from "components/Layout";
 import fetcher from "services/fetcher";
 
 import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
-const ShowPage = ({ initialData }) => {
+const EpisodePage = ({ initialData }) => {
   const router = useRouter();
   const { showId, seasonNumber, episodeNumber } = router.query;
 
@@ -118,7 +118,7 @@ const ShowPage = ({ initialData }) => {
   );
 };
 
-ShowPage.getInitialProps = async function({ query }) {
+EpisodePage.getInitialProps = async function({ query }) {
   const data = await fetcher(
     `${BASE_API_URL}/api/episode-info?id=${query.showId}&season=${query.seasonNumber}&episode=${query.episodeNumber}`
   );
@@ -128,4 +128,4 @@ ShowPage.getInitialProps = async function({ query }) {
   };
 };
 
-export default ShowPage;
+export default EpisodePage;

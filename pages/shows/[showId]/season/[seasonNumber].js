@@ -11,7 +11,7 @@ import { generateDescription } from "utils/helpers";
 
 import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
-const ShowPage = ({ initialData }) => {
+const SeasonPage = ({ initialData }) => {
   const router = useRouter();
   const { showId, seasonNumber } = router.query;
 
@@ -115,7 +115,7 @@ const ShowPage = ({ initialData }) => {
   );
 };
 
-ShowPage.getInitialProps = async function({ query }) {
+SeasonPage.getInitialProps = async function({ query }) {
   const data = await fetcher(
     `${BASE_API_URL}/api/season-info?id=${query.showId}&season=${query.seasonNumber}`
   );
@@ -125,4 +125,4 @@ ShowPage.getInitialProps = async function({ query }) {
   };
 };
 
-export default ShowPage;
+export default SeasonPage;

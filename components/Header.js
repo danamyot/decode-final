@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import Link from "next/link";
 
 const Header = props => (
-  <header id="header" className="alt">
+  <header id="header">
     <Link href="/">
       <a className="logo">
         <strong>Trakr</strong>

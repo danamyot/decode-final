@@ -10,7 +10,6 @@ import Layout from "components/Layout";
 import MissingImage from "components/MissingImage";
 import RelatedShows from "components/RelatedShows";
 import YouTubePlayer from "components/YouTubePlayer";
-
 import fetcher from "services/fetcher";
 import { arrayCapitalize, generateDescription } from "utils/helpers";
 
