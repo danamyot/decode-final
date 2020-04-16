@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import useSWR from "swr";
 
 import BannerSearch from "components/BannerSearch";
@@ -23,38 +24,57 @@ const Index = () => {
     fetcher
   );
 
+  const { searchResults, searchQuery } = useSelector((state) => state.search);
+
+  const sortResults = (results) => results.sort((a, b) => b.votes - a.votes);
+
   return (
     <Layout pageName="index">
       <div>
-        <BannerSearch currentQuery="" />
+        <BannerSearch currentQuery={searchQuery} />
         <div id="main">
-          <section id="one" className="trending-shows tiles">
-            <div className="inner">
-              <ShowList
-                data={trendingShows}
-                listTitle="Trending Shows"
-                link="/list/trending"
-              />
-            </div>
-          </section>
-          <section id="two" className="popular-shows tiles">
-            <div className="inner">
-              <ShowList
-                data={popularShows}
-                listTitle="Popular Shows"
-                link="/list/popular"
-              />
-            </div>
-          </section>
-          <section id="three" className="most-watched-shows tiles">
-            <div className="inner">
-              <ShowList
-                data={mostWatchedShows}
-                listTitle="Most Watched Shows"
-                link="/list/watched"
-              />
-            </div>
-          </section>
+          {searchResults ? (
+            <section id="one" className="search-results tiles">
+              <div className="inner">
+                {searchResults && (
+                  <ShowList
+                    data={sortResults(searchResults)}
+                    listTitle="Search Results"
+                  />
+                )}
+              </div>
+            </section>
+          ) : (
+            <>
+              <section id="one" className="trending-shows tiles">
+                <div className="inner">
+                  <ShowList
+                    data={trendingShows}
+                    listTitle="Trending Shows"
+                    link="/list/trending"
+                  />
+                </div>
+              </section>
+              <section id="two" className="popular-shows tiles">
+                <div className="inner">
+                  <ShowList
+                    data={popularShows}
+                    listTitle="Popular Shows"
+                    link="/list/popular"
+                  />
+                </div>
+              </section>
+              <section id="three" className="most-watched-shows tiles">
+                <div className="inner">
+                  <ShowList
+                    data={mostWatchedShows}
+                    listTitle="Most Watched Shows"
+                    link="/list/watched"
+                  />
+                </div>
+              </section>
+            </>
+          )}
         </div>
       </div>
     </Layout>
