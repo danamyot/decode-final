@@ -11,7 +11,7 @@ class Layout extends React.Component {
     super(props);
     this.state = {
       isMenuVisible: false,
-      loading: "is-loading"
+      loading: "is-loading",
     };
     this.handleToggleMenu = this.handleToggleMenu.bind(this);
   }
@@ -30,7 +30,7 @@ class Layout extends React.Component {
 
   handleToggleMenu() {
     this.setState({
-      isMenuVisible: !this.state.isMenuVisible
+      isMenuVisible: !this.state.isMenuVisible,
     });
   }
 
@@ -64,7 +64,10 @@ class Layout extends React.Component {
             href="/favicon-16x16.png"
           />
           <link rel="manifest" href="/site.webmanifest"></link>
-          <meta name="description" content="Next.js Starter - Forty" />
+          <meta
+            name="description"
+            content="Trakr.tv is a free website to track and follow all of your favorite TV shows. Create an account to get started."
+          />
           <link href="/css/skel.css" rel="stylesheet" />
           <link
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"

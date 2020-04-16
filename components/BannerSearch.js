@@ -50,13 +50,13 @@ const BannerSearch = ({ currentQuery }) => {
               <br />
               Sign up to get started.
             </p>
-            <ul className="actions">
+            {/* <ul className="actions">
               <li>
                 <a href="#one" className="button next scrolly">
                   Get Started
                 </a>
               </li>
-            </ul>
+            </ul> */}
           </div>
         </div>
       </section>
