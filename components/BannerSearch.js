@@ -1,23 +1,29 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addSearchResults } from "redux/actions/searchResultsActions";
+import { setSearchResults, setSearchQuery } from "redux/actions/searchActions";
 
 import fetcher from "services/fetcher";
 
 import { BASE_API_URL } from "config/dev.config.json";
 
-const BannerSearch = () => {
+const BannerSearch = ({ currentQuery }) => {
   const router = useRouter();
-  const [query, setQuery] = useState("");
+
+  const [query, setQuery] = useState(currentQuery);
+
   const dispatch = useDispatch();
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
+
     let searchResult = await fetcher(
       `${BASE_API_URL}/api/search?query=${query}`
     );
-    dispatch(addSearchResults(searchResult));
+
+    dispatch(setSearchQuery(query));
+    dispatch(setSearchResults(searchResult));
+
     router.push("/search");
   };
 

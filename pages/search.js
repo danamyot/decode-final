@@ -5,14 +5,16 @@ import Layout from "components/Layout";
 import ShowList from "components/ShowList";
 
 const SearchResults = () => {
-  const { searchResults: results } = useSelector(state => state.searchResults);
+  const { searchResults: results, searchQuery } = useSelector(
+    (state) => state.search
+  );
 
-  const sortResults = results => results.sort((a, b) => b.votes - a.votes);
+  const sortResults = (results) => results.sort((a, b) => b.votes - a.votes);
 
   return (
     <Layout pageName="search-results">
       <div>
-        <BannerSearch />
+        <BannerSearch currentQuery={searchQuery} />
         <div id="main">
           <section id="one" className="search-results tiles">
             <div className="inner">

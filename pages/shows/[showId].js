@@ -114,7 +114,10 @@ const ShowPage = () => {
 
                     return (
                       <section key={season.number}>
-                        <Link href={`/shows/${showId}/season/${season.number}`}>
+                        <Link
+                          href="/shows/[showId]/season/[seasonNumber]"
+                          as={`/shows/${showId}/season/${season.number}`}
+                        >
                           <a className="image">
                             {seasonImage ? (
                               <img
@@ -144,7 +147,8 @@ const ShowPage = () => {
                             <ul className="actions">
                               <li>
                                 <Link
-                                  href={`/shows/${showId}/season/${season.number}`}
+                                  href="/shows/[showId]/season/[seasonNumber]"
+                                  as={`/shows/${showId}/season/${season.number}`}
                                 >
                                   <a className="button">Episodes</a>
                                 </Link>

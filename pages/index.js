@@ -26,7 +26,7 @@ const Index = () => {
   return (
     <Layout pageName="index">
       <div>
-        <BannerSearch />
+        <BannerSearch currentQuery="" />
         <div id="main">
           <section id="one" className="trending-shows tiles">
             <div className="inner">

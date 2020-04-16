@@ -19,19 +19,17 @@ const SeasonPage = ({ initialData }) => {
     `${BASE_API_URL}/api/season-info?id=${showId}&season=${seasonNumber}`,
     fetcher,
     {
-      initialData
+      initialData,
     }
   );
 
   process.browser && console.log(seasonData);
 
   const bannerSubHeader = "";
-  // seasonData.showInfo && `Aired: ${moment(seasonData.first_aired).year()}`;
+  seasonData.showInfo && `Aired: ${moment(seasonData.first_aired).year()}`;
 
   return (
     <Layout pageName="season-id">
-      {/* {seasonData && (
-        <> */}
       <Head>
         <title>
           {`${seasonData.title} | ${seasonData.showInfo.title}`} | Trakr.tv
@@ -65,7 +63,8 @@ const SeasonPage = ({ initialData }) => {
             {seasonData.episodes.map((episode, i) => (
               <section key={episode.number}>
                 <Link
-                  href={`/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`}
+                  href="/shows/[showId]/season/[seasonNumber]/episode/[episodeNumber]"
+                  as={`/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`}
                 >
                   <a className="image">
                     <img
@@ -79,7 +78,8 @@ const SeasonPage = ({ initialData }) => {
                     <h4>Episode {episode.number}</h4>
                     <header className="major">
                       <Link
-                        href={`/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`}
+                        href="/shows/[showId]/season/[seasonNumber]/episode/[episodeNumber]"
+                        as={`/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`}
                       >
                         <a className="h3">{episode.title}</a>
                       </Link>
@@ -87,20 +87,17 @@ const SeasonPage = ({ initialData }) => {
                     <p>
                       Runtime: {episode.runtime}m
                       <br />
-                      {moment(episode.first_aired)
-                        .utc()
-                        .format("YYYY-MM-DD")}
+                      {moment(episode.first_aired).utc().format("YYYY-MM-DD")}
                     </p>
-                    <p>
-                      {generateDescription(
-                        episode.overview,
-                        `/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`
-                      )}
-                    </p>
+                    {generateDescription(
+                      episode.overview,
+                      `/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`
+                    )}
                     <ul className="actions">
                       <li>
                         <Link
-                          href={`/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`}
+                          href="/shows/[showId]/season/[seasonNumber]/episode/[episodeNumber]"
+                          as={`/shows/${showId}/season/${seasonNumber}/episode/${episode.number}`}
                         >
                           <a>More</a>
                         </Link>
@@ -113,18 +110,17 @@ const SeasonPage = ({ initialData }) => {
           </section>
         </div>
       </div>
-      {/* </>*/}) }
     </Layout>
   );
 };
 
-SeasonPage.getInitialProps = async function({ query }) {
+SeasonPage.getInitialProps = async function ({ query }) {
   const data = await fetcher(
     `${BASE_API_URL}/api/season-info?id=${query.showId}&season=${query.seasonNumber}`
   );
 
   return {
-    initialData: data
+    initialData: data,
   };
 };
 
