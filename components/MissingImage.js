@@ -1,7 +1,7 @@
 import MissingImageSVG from "public/images/no-image.svg";
 
-const ShowCard = ({ text }) => (
-  <div className="image-element">
+const ShowCard = ({ text, componentClass }) => (
+  <div className={`image-element ${componentClass}`}>
     <div className="missing-image-placeholder">
       <MissingImageSVG />
       {text}

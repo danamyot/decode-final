@@ -34,12 +34,22 @@ export default async (req, res) => {
     season: seasonArt
   };
 
-  const showWithImage = {
+  let showWithImage = {
+    ...showInfo,
+    seasons: [...seasonsInfo],
+    imageData
+  };
+
+  if (castInfo.response && castInfo.response.status === 404) {
+    return res.status(200).json(showWithImage);
+  }
+
+  const showWithCast = {
     ...showInfo,
     cast: [...castInfo],
     seasons: [...seasonsInfo],
     imageData
   };
 
-  res.status(200).json(showWithImage);
+  res.status(200).json(showWithCast);
 };

@@ -4,9 +4,11 @@ $c_0: #000000;
 $c_1: #353540;
 
 .show-card-container {
+  width: 60%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 2rem;
+  text-align: center;
 
   @include breakpoint(small) {
     grid-template-columns: repeat(2, 1fr);
