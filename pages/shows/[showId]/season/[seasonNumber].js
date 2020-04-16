@@ -25,11 +25,13 @@ const SeasonPage = ({ initialData }) => {
 
   process.browser && console.log(seasonData);
 
-  const bannerSubHeader =
-    seasonData.showInfo && `Aired: ${moment(seasonData.first_aired).year()}`;
+  const bannerSubHeader = "";
+  // seasonData.showInfo && `Aired: ${moment(seasonData.first_aired).year()}`;
 
   return (
     <Layout pageName="season-id">
+      {/* {seasonData && (
+        <> */}
       <Head>
         <title>
           {`${seasonData.title} | ${seasonData.showInfo.title}`} | Trakr.tv
@@ -111,6 +113,7 @@ const SeasonPage = ({ initialData }) => {
           </section>
         </div>
       </div>
+      {/* </>*/}) }
     </Layout>
   );
 };

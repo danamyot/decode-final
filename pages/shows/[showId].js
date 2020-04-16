@@ -55,111 +55,116 @@ const ShowPage = ({ initialShowData }) => {
 
   return (
     <Layout pageName="show-id">
-      <Head>
-        <title>{showData.title} | Trakr.tv</title>
-        <meta
-          name="description"
-          content={`${showData.title}. ${showData.overview}`}
-        />
-      </Head>
-      <div>
-        <Banner
-          heading={showData.title}
-          subHeading={bannerSubHeader}
-          background={`${BASE_TVDB_IMG_URL}/${showData.imageData.fanart[0].fileName}`}
-        />
+      {showData && (
+        <>
+          <Head>
+            <title>{showData.title} | Trakr.tv</title>
+            <meta
+              name="description"
+              content={`${showData.title}. ${showData.overview}`}
+            />
+          </Head>
+          <div>
+            <Banner
+              heading={showData.title}
+              subHeading={bannerSubHeader}
+              background={`${BASE_TVDB_IMG_URL}/${showData.imageData.fanart[0].fileName}`}
+            />
 
-        <div id="main">
-          <section id="one" className="show-info">
-            <div className="inner">
-              <div>
-                <header className="major">
-                  <h2>Overview</h2>
-                </header>
-                <p>{`Genres: ${arrayCapitalize(showData.genres).join(
-                  ", "
-                )}`}</p>
-                <p>{showData.overview}</p>
-                <p>
-                  <a href={showData.homepage}>Homepage</a>
-                </p>
-              </div>
-              {showData.trailer && (
-                <div className="show-trailer">
-                  <h4>Trailer</h4>
-                  <YouTubePlayer
-                    videoURL={`https://www.youtube.com/embed/${
-                      showData.trailer.split("?v=")[1]
-                    }`}
-                  />
+            <div id="main">
+              <section id="one" className="show-info">
+                <div className="inner">
+                  <div>
+                    <header className="major">
+                      <h2>Overview</h2>
+                    </header>
+                    <p>{`Genres: ${arrayCapitalize(showData.genres).join(
+                      ", "
+                    )}`}</p>
+                    <p>{showData.overview}</p>
+                    <p>
+                      <a href={showData.homepage}>Homepage</a>
+                    </p>
+                  </div>
+                  {showData.trailer && (
+                    <div className="show-trailer">
+                      <h4>Trailer</h4>
+                      <YouTubePlayer
+                        videoURL={`https://www.youtube.com/embed/${
+                          showData.trailer.split("?v=")[1]
+                        }`}
+                      />
+                    </div>
+                  )}
                 </div>
+              </section>
+              {showData.cast && (
+                <section id="two" className="show-cast">
+                  <div className="inner">
+                    <CastSlider cast={showData.cast} />
+                  </div>
+                </section>
+              )}
+              <section id="three" className="seasons spotlights">
+                {showData.seasons
+                  .filter(season => season.number > 0 && season.first_aired)
+                  .map(season => {
+                    const seasonImage = findSeasonImage(
+                      season,
+                      showData.imageData.season
+                    );
+
+                    return (
+                      <section key={season.number}>
+                        <Link href={`/shows/${showId}/season/${season.number}`}>
+                          <a className="image">
+                            {seasonImage ? (
+                              <img
+                                src={`${BASE_TVDB_IMG_URL}/${seasonImage}`}
+                                alt={`${showData.title} ${season.title} image`}
+                              />
+                            ) : (
+                              <MissingImage
+                                text={`${showData.title} ${season.title} Image`}
+                              />
+                            )}
+                          </a>
+                        </Link>
+                        <div className="content">
+                          <div className="inner">
+                            <div className="major">
+                              <h3>
+                                {season.title} (
+                                {moment(season.first_aired).year()})
+                              </h3>
+                            </div>
+                            <p>Episodes: {season.aired_episodes}</p>
+                            {generateDescription(
+                              season.overview,
+                              `/shows/${showId}/season/${season.number}`
+                            )}
+                            <ul className="actions">
+                              <li>
+                                <Link
+                                  href={`/shows/${showId}/season/${season.number}`}
+                                >
+                                  <a className="button">Episodes</a>
+                                </Link>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </section>
+                    );
+                  })}
+              </section>
+              {relatedShowsData && (
+                <RelatedShows relatedShowsData={relatedShowsData} />
               )}
             </div>
-          </section>
-          {showData.cast && (
-            <section id="two" className="show-cast">
-              <div className="inner">
-                <CastSlider cast={showData.cast} />
-              </div>
-            </section>
-          )}
-          <section id="three" className="seasons spotlights">
-            {showData.seasons
-              .filter(season => season.number > 0 && season.first_aired)
-              .map(season => {
-                const seasonImage = findSeasonImage(
-                  season,
-                  showData.imageData.season
-                );
-
-                return (
-                  <section key={season.number}>
-                    <Link href={`/shows/${showId}/season/${season.number}`}>
-                      <a className="image">
-                        {seasonImage ? (
-                          <img
-                            src={`${BASE_TVDB_IMG_URL}/${seasonImage}`}
-                            alt={`${showData.title} ${season.title} image`}
-                          />
-                        ) : (
-                          <MissingImage
-                            text={`${showData.title} ${season.title} Image`}
-                          />
-                        )}
-                      </a>
-                    </Link>
-                    <div className="content">
-                      <div className="inner">
-                        <div className="major">
-                          <h3>
-                            {season.title} ({moment(season.first_aired).year()})
-                          </h3>
-                        </div>
-                        <p>Episodes: {season.aired_episodes}</p>
-                        {generateDescription(
-                          season.overview,
-                          `/shows/${showId}/season/${season.number}`
-                        )}
-                        <ul className="actions">
-                          <li>
-                            <Link
-                              href={`/shows/${showId}/season/${season.number}`}
-                            >
-                              <a className="button">Episodes</a>
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </section>
-                );
-              })}
-          </section>
-          {relatedShowsData && (
-            <RelatedShows relatedShowsData={relatedShowsData} />
-          )}
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </Layout>
   );
 };

@@ -9,7 +9,7 @@ const Banner = ({
 }) => (
   <section
     id="banner"
-    className="style2"
+    className="major style2"
     style={background && { backgroundImage: `url(${background})` }}
   >
     <div className="inner">

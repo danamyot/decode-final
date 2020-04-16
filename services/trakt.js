@@ -19,6 +19,16 @@ const getRelatedShows = (showId, limit) => {
   );
 };
 
+const getSearchResults = query => {
+  const transformedQuery = query.split(" ").join("-");
+  return instance
+    .get(`/search/show?query=${transformedQuery}&extended=full&limit=20`)
+    .then(
+      response => response.data,
+      error => error
+    );
+};
+
 const getShowAllSeasons = showId => {
   return instance.get(`/shows/${showId}/seasons?extended=full`).then(
     response => response.data,
@@ -57,6 +67,7 @@ const getTopShows = (category, limit) => {
 
 export default {
   getRelatedShows,
+  getSearchResults,
   getShowAllSeasons,
   getShowSeason,
   getShowInfo,
