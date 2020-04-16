@@ -14,6 +14,13 @@ function MyApp({ Component, pageProps, store }) {
   );
 }
 
+MyApp.getInitialProps = async function({ Component, ctx }) {
+  const pageProps = Component.getInitialProps
+    ? await Component.getInitialProps(ctx)
+    : {};
+  return { pageProps: pageProps };
+};
+
 const makeStore = () => store;
 
 export default withRedux(makeStore)(MyApp);

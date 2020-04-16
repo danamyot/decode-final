@@ -7,13 +7,10 @@ import fetcher from "services/fetcher";
 
 import { BASE_API_URL } from "config/dev.config.json";
 
-const Index = ({ initialData }) => {
+const Index = () => {
   const { data: trendingShows } = useSWR(
     `${BASE_API_URL}/api/top-shows?category=trending&limit=8`,
-    fetcher,
-    {
-      initialData
-    }
+    fetcher
   );
 
   const { data: popularShows } = useSWR(
@@ -62,14 +59,6 @@ const Index = ({ initialData }) => {
       </div>
     </Layout>
   );
-};
-
-Index.getInitialProps = async function() {
-  const data = await fetcher(
-    `${BASE_API_URL}/api/top-shows?category=trending&limit=8`
-  );
-
-  return { initialData: data };
 };
 
 export default Index;

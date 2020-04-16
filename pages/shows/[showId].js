@@ -7,6 +7,7 @@ import moment from "moment";
 import Banner from "components/Banner";
 import CastSlider from "components/CastSlider";
 import Layout from "components/Layout";
+import Loader from "components/Loader";
 import MissingImage from "components/MissingImage";
 import RelatedShows from "components/RelatedShows";
 import YouTubePlayer from "components/YouTubePlayer";
@@ -15,16 +16,13 @@ import { arrayCapitalize, generateDescription } from "utils/helpers";
 
 import { BASE_TVDB_IMG_URL, BASE_API_URL } from "config/dev.config.json";
 
-const ShowPage = ({ initialShowData }) => {
+const ShowPage = () => {
   const router = useRouter();
   const { showId } = router.query;
 
   const { data: showData } = useSWR(
     `${BASE_API_URL}/api/show-info?id=${showId}`,
-    fetcher,
-    {
-      initialData: initialShowData
-    }
+    fetcher
   );
 
   process.browser && console.log(showData);
@@ -48,14 +46,14 @@ const ShowPage = ({ initialShowData }) => {
   const findSeasonImage = (season, imageData) => {
     return (
       imageData &&
-      imageData.find(seasonImage => seasonImage.subKey === `${season.number}`)
+      imageData.find((seasonImage) => seasonImage.subKey === `${season.number}`)
         .fileName
     );
   };
 
   return (
     <Layout pageName="show-id">
-      {showData && (
+      {showData ? (
         <>
           <Head>
             <title>{showData.title} | Trakr.tv</title>
@@ -107,8 +105,8 @@ const ShowPage = ({ initialShowData }) => {
               )}
               <section id="three" className="seasons spotlights">
                 {showData.seasons
-                  .filter(season => season.number > 0 && season.first_aired)
-                  .map(season => {
+                  .filter((season) => season.number > 0 && season.first_aired)
+                  .map((season) => {
                     const seasonImage = findSeasonImage(
                       season,
                       showData.imageData.season
@@ -164,19 +162,11 @@ const ShowPage = ({ initialShowData }) => {
             </div>
           </div>
         </>
+      ) : (
+        <Loader />
       )}
     </Layout>
   );
-};
-
-ShowPage.getInitialProps = async function({ query }) {
-  const [showData] = await Promise.all([
-    await fetcher(`${BASE_API_URL}/api/show-info?id=${query.showId}`)
-  ]);
-
-  return {
-    initialShowData: showData
-  };
 };
 
 export default ShowPage;
