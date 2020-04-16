@@ -12,7 +12,7 @@ const BannerSearch = () => {
   const [query, setQuery] = useState("");
   const dispatch = useDispatch();
 
-  const handleSubmit = async evt => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
     let searchResult = await fetcher(
       `${BASE_API_URL}/api/search?query=${query}`
@@ -28,8 +28,10 @@ const BannerSearch = () => {
           <form onSubmit={handleSubmit}>
             <input
               type="text"
+              placeholder="Search Trakr.tv"
+              className="banner-search-bar h1"
               value={query}
-              onChange={e => setQuery(e.target.value)}
+              onChange={(e) => setQuery(e.target.value)}
             />
           </form>
         </header>

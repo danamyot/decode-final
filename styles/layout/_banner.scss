@@ -44,7 +44,22 @@
     margin-bottom: 0;
   }
 
-  h1 {
+  .banner-search-bar {
+    height: auto;
+    margin: 0;
+    padding: 0 0.25em;
+
+    &::placeholder {
+      color: _palette(fg);
+    }
+  }
+
+  .banner-search-bar:focus {
+    box-shadow: none;
+  }
+
+  h1,
+  .h1 {
     font-size: 3.25em;
   }
 
@@ -166,7 +181,8 @@
     min-height: 0;
     top: -2.75em;
 
-    h1 {
+    h1,
+    .h1 {
       font-size: 2em;
     }
 
