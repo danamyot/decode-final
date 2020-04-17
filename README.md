@@ -4,7 +4,7 @@ Trakr.tv is a simple way to browse and track your favorite TV shows.
 
 ## Preview
 
-URL WHEN LIVE HERE.
+https://trakr.tv
 
 ## Getting Started
 
