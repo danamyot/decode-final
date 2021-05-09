@@ -1,6 +1,6 @@
 # Trakr.tv
 
-Trakr.tv is a simple way to browse and track your favorite TV shows.
+Trakr.tv is a simple way to browse and track your favorite TV shows. Made with React, NextJS using Trackt & TVDB APIs.
 
 ## Preview
 
